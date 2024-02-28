@@ -20,7 +20,7 @@ end
 
 function jacobian_right_transformation(left_op, H, symmetry, symbol, name, H_name, indices)
     t1 = @time ∑(jacobian_element(left_op, ex_ketop(5, 6), H) * real_tensor("ct", 5, 6), 5:6)
-    t1 = @time simplify(t1)
+    t1 = @time simplify_heavy(t1)
     @time begin
         t1 = look_for_tensor_replacements_smart(t1, make_exchange_transformer("t", "u"))
         t1 = look_for_tensor_replacements_smart(t1, make_exchange_transformer("s", "v"))
@@ -40,7 +40,7 @@ function jacobian_right_transformation(left_op, H, symmetry, symbol, name, H_nam
     display(t1_ns)
 
     t2 = @time (1 // 2 * ∑(jacobian_element(left_op, ex_ketop(5, 6, 7, 8), H) * psym_tensor("ct", 5:8...), 5:8))
-    t2 = @time simplify(t2)
+    t2 = @time simplify_heavy(t2)
     @time begin
         t2 = look_for_tensor_replacements_smart(t2, make_exchange_transformer("t", "u"))
         t2 = look_for_tensor_replacements_smart(t2, make_exchange_transformer("s", "v"))
@@ -61,7 +61,7 @@ function jacobian_right_transformation(left_op, H, symmetry, symbol, name, H_nam
     display(t2_ns)
 
     γ = @time (jacobian_element(left_op, b', H) * real_tensor("cγ"))
-    γ = @time simplify(γ)
+    γ = @time simplify_heavy(γ)
     @time begin
         γ = look_for_tensor_replacements_smart(γ, make_exchange_transformer("t", "u"))
         γ = look_for_tensor_replacements_smart(γ, make_exchange_transformer("s", "v"))
@@ -81,7 +81,7 @@ function jacobian_right_transformation(left_op, H, symmetry, symbol, name, H_nam
     display(γ_ns)
 
     s1 = @time (∑(jacobian_element(left_op, ex_ketop(5, 6) * b', H) * real_tensor("cs", 5, 6), 5:6))
-    s1 = @time simplify(s1)
+    s1 = @time simplify_heavy(s1)
     @time begin
         s1 = look_for_tensor_replacements_smart(s1, make_exchange_transformer("t", "u"))
         s1 = look_for_tensor_replacements_smart(s1, make_exchange_transformer("s", "v"))
@@ -101,7 +101,7 @@ function jacobian_right_transformation(left_op, H, symmetry, symbol, name, H_nam
     display(s1_ns)
 
     s2 = @time (1 // 2 * ∑(jacobian_element(left_op, ex_ketop(5, 6, 7, 8) * b', H) * psym_tensor("cs", 5:8...), 5:8))
-    s2 = @time simplify(s2)
+    s2 = @time simplify_heavy(s2)
     @time begin
         s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("t", "u"))
         s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("s", "v"))

@@ -22,9 +22,9 @@ include("jacobian_trans_right.jl")
 include("jacobian_trans_left.jl")
 
 function jacobian_element(left_op, right_op, H, n=2)
-    x = SASQ.simplify_terms(left_op * bch(commutator(H, right_op), T, n))
+    x = simplify(left_op * bch(commutator(H, right_op), T, n))
 
-    SASQ.simplify_terms(hf_expectation_value(x))
+    simplify(hf_expectation_value(x))
 end
 
 A_trans = translate(OccupiedOrbital => 2:2:10, VirtualOrbital => 1:2:10)
