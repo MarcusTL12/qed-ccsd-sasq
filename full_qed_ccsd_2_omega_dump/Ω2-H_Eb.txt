@@ -1,0 +1,3 @@
+4 ∑_ia(d_ia s₁_ai)
++ 8 ∑_ia(d_ia s₁_ai γ₂)
++ 4 ∑_ia(d_ia s₂_ai γ₁)

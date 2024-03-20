@@ -1,0 +1,9 @@
+d_ai s₁_bj
++ ∑_c(d_ac s₁_bjci)
+- ∑_k(d_ki s₁_akbj)
++ ∑_k(d_kk s₁_aibj)
++ ∑_c(d_ac t_bjci γ₁)
+- ∑_k(d_ki t_akbj γ₁)
+- ∑_kc(d_kc s₁_ak t_bjci)
+- ∑_kc(d_kc s₁_ci t_akbj)
++ ∑_kc(d_kc s₁_ai u_bjck)

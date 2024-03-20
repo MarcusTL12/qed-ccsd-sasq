@@ -1,0 +1,4 @@
+2 ∑_i(d_ii)
++ 4 ∑_i(d_ii γ₂)
++ 4 ∑_ia(d_ia s₂_ai)
++ 2 ∑_ia(d_ia s₁_ai γ₁)

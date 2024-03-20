@@ -1,0 +1,2 @@
+2 ∑_ia(F_ia s₁_ai)
++ ∑_iajb(g_iajb v₁_aibj)

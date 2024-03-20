@@ -92,7 +92,10 @@ function omega_s2_2()
 end
 
 function print_all_omegas_as_string_to_file()
-    # omegas = ["Ω0_ai", "Ω0_aibj", "Ω1", "Ω1_ai", "Ω1_aibj", "Ω2", "Ω2_ai", "Ω2_aibj"]
-    # Hs = ["HFe", "H_ω", "H_"]
-    # for name in 
+    for name in readdir("full_qed_ccsd_2_omega_serial/")
+        ex = deserialize("full_qed_ccsd_2_omega_serial/$name")
+        open("full_qed_ccsd_2_omega_dump/$(name).txt", "w") do io
+            println(io, ex)
+        end
+    end
 end

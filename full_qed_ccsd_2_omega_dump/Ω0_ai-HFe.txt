@@ -1,0 +1,4 @@
+F_ai
++ ∑_jb(F_jb u_aibj)
++ ∑_bjc(g_abjc u_bicj)
+- ∑_jkb(g_jikb u_ajbk)
