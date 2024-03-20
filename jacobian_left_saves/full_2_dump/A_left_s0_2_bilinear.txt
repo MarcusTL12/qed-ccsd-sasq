@@ -1,0 +1,5 @@
+8 ∑_i(bγ d_ii)
++ 4 ∑_ai(bs_ai d_ai)
++ 4 ∑_aijb(bs_ai d_jb u_aibj)
++ 4 ∑_aibjc(bs_aibj d_ac t_bjci)
+- 4 ∑_aibjk(bs_aibj d_ki t_akbj)

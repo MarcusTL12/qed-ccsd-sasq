@@ -1,0 +1,5 @@
+8 bs_ai d_jb
+- 4 bs_aj d_ib
++ 4 ∑_k(bs_aibj d_kk)
+- 4 ∑_k(bs_aibk d_jk)
++ 4 ∑_c(bs_aicj d_cb)
