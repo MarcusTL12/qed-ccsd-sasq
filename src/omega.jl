@@ -25,7 +25,8 @@ trans = translate(OccupiedOrbital => [2, 4], VirtualOrbital => [1, 3])
 function omega(proj, op, n, symmetry=[])
     println()
     # expansion = @time bch(op, T, n)
-    expansion = @time bch_smart(op, [T2, S1_1, S2_1, Γ1, S1_2, S2_2, Γ2], n)
+    # expansion = @time bch_smart(op, [T2, S1_1, S2_1, Γ1, S1_2, S2_2, Γ2], n)
+    expansion = @time bch_smart(op, [T2, S1_1, S2_1, Γ1], n)
     inner = simplify(proj * expansion)
     projected = @time hf_expectation_value(inner)
     Ω = @time simplify_heavy(projected)
@@ -91,11 +92,20 @@ function omega_s2_2()
     make_omega(b^2 * deex_braop(1, 2, 3, 4), "Ω2_aibj", [(1, 2), (3, 4)]; HFe_n=3)
 end
 
-function print_all_omegas_as_string_to_file()
-    for name in readdir("full_qed_ccsd_2_omega_serial/")
-        ex = deserialize("full_qed_ccsd_2_omega_serial/$name")
-        open("full_qed_ccsd_2_omega_dump/$(name).txt", "w") do io
+function print_all_omegas_as_string_to_file(topname="full_qed_ccsd_2_omega")
+    for name in readdir("$(topname)_serial/")
+        ex = deserialize("$(topname)_serial/$name")
+        open("$(topname)_dump/$(name).txt", "w") do io
             println(io, ex)
         end
+    end
+end
+
+function make_omega_differences()
+    for name in readdir("full_qed_ccsd_1_omega_serial/")
+        ex1 = deserialize("full_qed_ccsd_1_omega_serial/$name")
+        ex2 = deserialize("full_qed_ccsd_2_omega_serial/$name")
+        Δ = ex2 - ex1
+        serialize("reduced_qed_ccsd_2_omega_serial/$name", Δ)
     end
 end
