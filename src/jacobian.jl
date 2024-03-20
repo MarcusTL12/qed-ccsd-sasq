@@ -16,9 +16,9 @@ function jacobian_element(left_op, right_op, H, n=2)
     # x = bch_smart(comm, [T2, S1_1, S2_1, Γ1, S1_2, S2_2, Γ2], n)
     # x = simplify(left_op * x)
 
-    x = @time act_eT_on_bra(left_op, -T_qed_ccsd_1)
+    x = @time act_eT_on_bra(left_op, -T)
     x = @time act_on_bra(x * comm) |> simplify
-    x = @time act_eT_on_bra(x, T_qed_ccsd_1; max_ops=0)
+    x = @time act_eT_on_bra(x, T; max_ops=0)
 end
 
 A_trans = translate(OccupiedOrbital => 2:2:10, VirtualOrbital => 1:2:10)
