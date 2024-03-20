@@ -24,12 +24,17 @@ trans = translate(OccupiedOrbital => [2, 4], VirtualOrbital => [1, 3])
 
 function omega(proj, op, n, symmetry=[])
     println()
-    # expansion = @time bch(op, T, n)
+    # expansion = @time bch(op, T2, n)
+    # expansion = @time bch_smart(op, [T2, S1_1, S2_1, Γ1], n)
     # expansion = @time bch_smart(op, [T2, S1_1, S2_1, Γ1, S1_2, S2_2, Γ2], n)
-    expansion = @time bch_smart(op, [T2, S1_1, S2_1, Γ1], n)
-    inner = simplify(proj * expansion)
-    projected = @time hf_expectation_value(inner)
-    Ω = @time simplify_heavy(projected)
+    # inner = simplify(proj * expansion)
+    # projected = @time hf_expectation_value(inner)
+    # Ω = @time simplify_heavy(projected)
+
+    x = @time act_eT_on_bra(proj, -T)
+    x = @time act_on_bra(x * op) |> simplify
+    x = @time act_eT_on_bra(x, T; max_ops=0)
+    Ω = @time simplify_heavy(x)
 
     @time begin
         Ω = look_for_tensor_replacements_smart(Ω, make_exchange_transformer("t", "u"))

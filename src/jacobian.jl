@@ -11,9 +11,12 @@ include("jacobian_trans_right.jl")
 include("jacobian_trans_left.jl")
 
 function jacobian_element(left_op, right_op, H, n=2)
-    x = simplify(left_op * bch(commutator(H, right_op), T, n))
+    comm = commutator(H, right_op)
+    # x = bch(comm, T, n)
+    x = bch_smart(comm, [T2, S1_1, S2_1, Γ1, S1_2, S2_2, Γ2], n)
+    x = simplify(left_op * x)
 
-    simplify(hf_expectation_value(x))
+    simplify(@time hf_expectation_value(x))
 end
 
 A_trans = translate(OccupiedOrbital => 2:2:10, VirtualOrbital => 1:2:10)
