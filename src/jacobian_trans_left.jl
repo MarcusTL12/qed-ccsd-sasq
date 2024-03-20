@@ -155,32 +155,36 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     println("\ns2_ns:\n")
     display((s2_ns, A_trans))
 
-    outperms = if length(symmetry) > 1
-        flatten_perms(make_permutation_mappings(symmetry))
-    else
-        nothing
-    end
+    ex_s += ex_ss * 1 // factorial(length(symmetry))
 
-    if iszero(ex_s)
-        println("\nfinal ex_ss:")
-        display((ex_ss, A_trans))
+    serialize("A_left_$(name)_$(H_name)", ex_s)
 
-        if !iszero(ex_ss)
-            make_code(ex_ss, symbol, "jacobian_transpose_qed_ccsd_$(H_name)_$(name)", indices, outperms)
-        end
-    else
-        println("\nfinal ex_s:")
-        display((ex_s, A_trans))
-        println("\nfinal ex_ss:")
-        display((ex_ss, A_trans))
+    # outperms = if length(symmetry) > 1
+    #     flatten_perms(make_permutation_mappings(symmetry))
+    # else
+    #     nothing
+    # end
 
-        if !iszero(ex_s)
-            make_code(ex_s, symbol, "jacobian_transpose_qed_ccsd_$(H_name)_$(name)", indices, outperms)
-        end
-        if !iszero(ex_ss)
-            make_code(ex_ss, symbol, "jacobian_transpose_qed_ccsd_$(H_name)_$(name)_sym", indices, outperms)
-        end
-    end
+    # if iszero(ex_s)
+    #     println("\nfinal ex_ss:")
+    #     display((ex_ss, A_trans))
+
+    #     if !iszero(ex_ss)
+    #         make_code(ex_ss, symbol, "jacobian_transpose_qed_ccsd_$(H_name)_$(name)", indices, outperms)
+    #     end
+    # else
+    #     println("\nfinal ex_s:")
+    #     display((ex_s, A_trans))
+    #     println("\nfinal ex_ss:")
+    #     display((ex_ss, A_trans))
+
+    #     if !iszero(ex_s)
+    #         make_code(ex_s, symbol, "jacobian_transpose_qed_ccsd_$(H_name)_$(name)", indices, outperms)
+    #     end
+    #     if !iszero(ex_ss)
+    #         make_code(ex_ss, symbol, "jacobian_transpose_qed_ccsd_$(H_name)_$(name)_sym", indices, outperms)
+    #     end
+    # end
 
     println()
 end
