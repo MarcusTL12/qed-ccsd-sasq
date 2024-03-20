@@ -109,3 +109,12 @@ function make_omega_differences()
         serialize("reduced_qed_ccsd_2_omega_serial/$name", Δ)
     end
 end
+
+function filter_zeros(dir)
+    for name in readdir(dir)
+        ex = deserialize("$dir/$name")
+        if iszero(ex)
+            rm("$dir/$name")
+        end
+    end
+end
