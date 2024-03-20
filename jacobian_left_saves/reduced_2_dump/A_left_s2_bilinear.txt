@@ -1,0 +1,13 @@
+2 bs_ai d_jb γ₁
+- bs_aj d_ib γ₁
+- 2 ∑_k(bs2_aibk d_jk)
++ 2 ∑_c(bs2_aicj d_cb)
+- 4 ∑_k(bs2_aibk d_jk γ₂)
++ 4 ∑_c(bs2_aicj d_cb γ₂)
++ 2 ∑_kc(bs2_aibj d_kc s₂_ck)
+- 6 ∑_kc(bs2_aibk d_jc s₂_ck)
+- 6 ∑_ck(bs2_aicj d_kb s₂_ck)
++ 8 ∑_ck(bs2_aick d_jb s₂_ck)
+- 4 ∑_ck(bs2_ajck d_ib s₂_ck)
+- 2 ∑_kc(bs2_aibk d_jc s₁_ck γ₁)
+- 2 ∑_ck(bs2_aicj d_kb s₁_ck γ₁)
