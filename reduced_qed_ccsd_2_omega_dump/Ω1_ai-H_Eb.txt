@@ -1,0 +1,6 @@
+2 d_ai γ₂
++ 2 ∑_b(d_ab s₂_bi)
+- 2 ∑_j(d_ji s₂_aj)
++ 4 ∑_j(d_jj s₂_ai)
++ 2 ∑_jb(d_jb v₂_aibj)
++ 2 ∑_jb(d_jb u_aibj γ₂)

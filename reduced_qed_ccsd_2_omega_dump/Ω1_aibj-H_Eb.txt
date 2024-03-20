@@ -1,0 +1,9 @@
+2 d_ai s₂_bj
++ 2 ∑_c(d_ac s₂_bjci)
+- 2 ∑_k(d_ki s₂_akbj)
++ 2 ∑_k(d_kk s₂_aibj)
++ 2 ∑_c(d_ac t_bjci γ₂)
+- 2 ∑_k(d_ki t_akbj γ₂)
+- 2 ∑_kc(d_kc s₂_ak t_bjci)
+- 2 ∑_kc(d_kc s₂_ci t_akbj)
++ 2 ∑_kc(d_kc s₂_ai u_bjck)
