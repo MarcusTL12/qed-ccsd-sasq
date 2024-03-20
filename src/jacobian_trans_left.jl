@@ -97,6 +97,64 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     println("\ns2_ns:\n")
     display((s2_ns, A_trans))
 
+    γ2 = simplify_heavy(jacobian_element(b^2, right_op, H) * real_tensor("bγ2"))
+    @time begin
+        γ2 = look_for_tensor_replacements_smart(γ2, make_exchange_transformer("t", "u"))
+        γ2 = look_for_tensor_replacements_smart(γ2, make_exchange_transformer("s", "v"))
+        γ2 = look_for_tensor_replacements_smart(γ2, make_exchange_transformer("g", "L"))
+    end
+
+    γ2_s, γ2_ss, γ2_ns = desymmetrize(γ, make_permutation_mappings(symmetry))
+
+    ex_s += γ2_s
+    ex_ss += γ2_ss
+
+    println("\nγ_s:\n")
+    display((γ_s, A_trans))
+    println("\nγ_ss:\n")
+    display((γ_ss, A_trans))
+    println("\nγ_ns:\n")
+    display((γ_ns, A_trans))
+
+    s1_2 = simplify_heavy(∑(jacobian_element(deex_braop(5, 6) * b, right_op, H) * real_tensor("bs", 5, 6), 5:6))
+    @time begin
+        s1_2 = look_for_tensor_replacements_smart(s1_2, make_exchange_transformer("t", "u"))
+        s1_2 = look_for_tensor_replacements_smart(s1_2, make_exchange_transformer("s", "v"))
+        s1_2 = look_for_tensor_replacements_smart(s1_2, make_exchange_transformer("g", "L"))
+    end
+
+    s1_2_s, s1_2_ss, s1_2_ns = desymmetrize(s1, make_permutation_mappings(symmetry))
+
+    ex_s += s1_2_s
+    ex_ss += s1_2_ss
+
+    println("\ns1_s:\n")
+    display((s1_2_s, A_trans))
+    println("\ns1_ss:\n")
+    display((s1_2_ss, A_trans))
+    println("\ns1_ns:\n")
+    display((s1_2_ns, A_trans))
+
+    s2 = simplify_heavy(1 // 2 * ∑(jacobian_element(deex_braop(5, 6, 7, 8) * b, right_op, H) * psym_tensor("bs", 5:8...), 5:8))
+    @time begin
+        s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("t", "u"))
+        s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("s", "v"))
+        s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("g", "L"))
+        s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("bs", "bv"))
+    end
+
+    s2_s, s2_ss, s2_ns = desymmetrize(s2, make_permutation_mappings(symmetry))
+
+    ex_s += s2_s
+    ex_ss += s2_ss
+
+    println("\ns2_s:\n")
+    display((s2_s, A_trans))
+    println("\ns2_ss:\n")
+    display((s2_ss, A_trans))
+    println("\ns2_ns:\n")
+    display((s2_ns, A_trans))
+
     outperms = if length(symmetry) > 1
         flatten_perms(make_permutation_mappings(symmetry))
     else
@@ -137,17 +195,32 @@ function A_left_t2(H, H_name)
     jacobian_left_transformation(ex_ketop(1, 2, 3, 4), H, [(1, 2), (3, 4)], "sigma_vovo", "t2", H_name, [1, 2, 3, 4])
 end
 
-function A_left_γ(H, H_name)
+function A_left_γ1(H, H_name)
     println("σγ =")
     jacobian_left_transformation(b', H, [], "sigma", "s0", H_name, [])
 end
 
-function A_left_s1(H, H_name)
+function A_left_s1_1(H, H_name)
     println("σs_ai =")
     jacobian_left_transformation(ex_ketop(1, 2) * b', H, [], "sigma_vo", "s1", H_name, [1, 2])
 end
 
-function A_left_s2(H, H_name)
+function A_left_s2_1(H, H_name)
     println("σs_aibj =")
     jacobian_left_transformation(ex_ketop(1, 2, 3, 4) * b', H, [(1, 2), (3, 4)], "sigma_vovo", "s2", H_name, [1, 2, 3, 4])
+end
+
+function A_left_γ2(H, H_name)
+    println("σγ =")
+    jacobian_left_transformation(b'^2, H, [], "sigma", "s0_2", H_name, [])
+end
+
+function A_left_s1_2(H, H_name)
+    println("σs_ai =")
+    jacobian_left_transformation(ex_ketop(1, 2) * b'^2, H, [], "sigma_vo", "s1_2", H_name, [1, 2])
+end
+
+function A_left_s2_2(H, H_name)
+    println("σs_aibj =")
+    jacobian_left_transformation(ex_ketop(1, 2, 3, 4) * b'^2, H, [(1, 2), (3, 4)], "sigma_vovo", "s2_2", H_name, [1, 2, 3, 4])
 end

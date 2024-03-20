@@ -1,15 +1,4 @@
 
-hF = ∑((
-        real_tensor("F", 1, 2) +
-        ∑((-2 // 1 * psym_tensor("g", 1, 2, 3, 3) +
-           psym_tensor("g", 1, 3, 3, 2)) * occupied(3), [3])
-    ) * E(1, 2) * electron(1, 2), 1:2)
-
-HF = simplify(hF + g + H_ω + H_Eb + H_b)
-
-He = simplify(h + g)
-HFe = simplify(hF + g)
-
 hFL = ∑((
         rsym_tensor("F", 1, 2) -
         ∑(psym_tensor("L", 1, 2, 3, 3) * occupied(3), [3])

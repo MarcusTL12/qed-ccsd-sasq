@@ -1,3 +1,4 @@
+using Revise
 using SpinAdaptedSecondQuantization
 
 b = boson()
@@ -7,7 +8,8 @@ include("W.jl")
 include("omega.jl")
 
 t(inds...) = psym_tensor("t", inds...)
-s(inds...) = psym_tensor("s", inds...)
+s1(inds...) = psym_tensor("s₁", inds...)
+s2(inds...) = psym_tensor("s₂", inds...)
 
 L(n, inds...) = psym_tensor("L$n", inds...)
 R(n, inds...) = psym_tensor("R$n", inds...)
@@ -18,16 +20,22 @@ T2 = 1 // 2 * ∑(
     1:4
 )
 
-S1 = ∑(s(1, 2) * E(1, 2) * b' * virtual(1) * occupied(2), 1:2)
-S2 = 1 // 2 * ∑(
-    s(1:4...) * E(1, 2) * E(3, 4) * b' * virtual(1, 3) * occupied(2, 4),
+S1_1 = ∑(s1(1, 2) * E(1, 2) * b' * virtual(1) * occupied(2), 1:2)
+S2_1 = 1 // 2 * ∑(
+    s1(1:4...) * E(1, 2) * E(3, 4) * b' * virtual(1, 3) * occupied(2, 4),
+    1:4
+)
+
+S1_2 = ∑(s2(1, 2) * E(1, 2) * b'^2 * virtual(1) * occupied(2), 1:2)
+S2_2 = 1 // 2 * ∑(
+    s2(1:4...) * E(1, 2) * E(3, 4) * b'^2 * virtual(1, 3) * occupied(2, 4),
     1:4
 )
 
 Γ1 = real_tensor("γ₁") * b'
-# Γ2 = real_tensor("γ₂") * b' * b'
+Γ2 = real_tensor("γ₂") * b'^2
 
-T = T2 + S1 + S2 + Γ1
+T = T2 + S1_1 + S2_1 + Γ1 + S1_2 + S2_2 + Γ2
 
 ex_ketop(a, i) = E(a, i) * occupied(i) * virtual(a)
 ex_ketop(a, i, b, j) = E(a, i) * E(b, j) * occupied(i, j) * virtual(a, b)
