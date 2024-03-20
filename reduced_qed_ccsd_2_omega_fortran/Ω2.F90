@@ -42,7 +42,7 @@
       call sort_to_21(wf%s1, X6, wf%n_v, wf%n_o)
       call mem%alloc(X7, wf%n_o, wf%n_v)
 !
-      call dgemv('N', &
+      call dgemv('T', &
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          two, &
