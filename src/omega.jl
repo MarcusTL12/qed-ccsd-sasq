@@ -118,3 +118,39 @@ function filter_zeros(dir)
         end
     end
 end
+
+function generate_code(dir, omega_name, eT_name, eT_symbol, indices, outperms=nothing)
+    Hs = ["HFe", "H_ω", "H_Eb"]
+
+    ex = SASQ.Expression(0)
+
+    for H in Hs
+        filename = "$dir/$omega_name-$H"
+        if isfile(filename)
+            ex += deserialize(filename)
+        end
+    end
+
+    open("$(omega_name).jl", "w") do io
+        println(io, print_eT_function_generator(eT_name, ex, eT_symbol, indices, A_trans, "qed_ccsd_2",
+            Dict([
+                "γ₁" => "wf%s0",
+                "γ₂" => "wf%s0_1",
+                "t_vo" => "wf%t1",
+                "s₁_vo" => "wf%s1",
+                "s₂_vo" => "wf%s1_2",
+                "u_vovo" => "wf%u_aibj",
+                "ω" => "wf%qed%frequencies(wf%mode)"
+            ]), ["γ₁", "γ₂", "t_vo", "s₁_vo", "s₂_vo", "u_vovo", "ω"], outperms))
+    end
+end
+
+function generate_all_code()
+    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω1", "omega_1", "omega", [])
+    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω1_ai", "omega_1_ai", "omega_vo", [1, 2])
+    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω1_aibj", "omega_1_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
+
+    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω2", "omega_2", "omega", [])
+    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω2_ai", "omega_2_ai", "omega_vo", [1, 2])
+    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω2_aibj", "omega_2_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
+end

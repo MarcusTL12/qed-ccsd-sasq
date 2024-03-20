@@ -1,0 +1,22 @@
+let
+    func = FortranFunction(("omega", String[]))
+    γ₂ = ("wf%s0_1", false)
+    ω = ("wf%qed%frequencies(wf%mode)", false)
+    F_ov = ("F_ov", true)
+    s₂_vo = ("wf%s1_2", false)
+    d_ov = ("d_ov", true)
+    s₁_vo = ("wf%s1", false)
+    γ₁ = ("wf%s0", false)
+    g_ovov = ("g_ovov", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
+    v₂_vovo = ("v₂_vovo", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
+    L_ovov = ("L_ovov", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
+    update_code!(func, ein",->", 4//1, [γ₂, ω])
+    update_code!(func, ein"ia,ai->", 4//1, [F_ov, s₂_vo])
+    update_code!(func, ein"ia,ai->", 4//1, [d_ov, s₁_vo])
+    update_code!(func, ein"ia,ai,->", 8//1, [d_ov, s₁_vo, γ₂])
+    update_code!(func, ein"ia,ai,->", 4//1, [d_ov, s₂_vo, γ₁])
+    update_code!(func, ein"iajb,aibj->", 2//1, [g_ovov, v₂_vovo])
+    update_code!(func, ein"iajb,ai,bj->", 2//1, [L_ovov, s₁_vo, s₁_vo])
+    finalize_eT_function(func, "omega_2", "qed_ccsd_2")
+end
+

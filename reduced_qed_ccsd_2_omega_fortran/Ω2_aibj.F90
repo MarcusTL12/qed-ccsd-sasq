@@ -1,0 +1,2764 @@
+   subroutine omega_2_aibj_qed_ccsd_2(wf, omega_vovo, F_oo, F_ov, F_vv, L_ooov, L_ovov, L_vvov, d_oo, d_ov, d_vv, g_oooo, g_ooov, g_ovov, g_vooo, g_voov, g_vovv, g_vvoo, g_vvov, g_vvvv, s₁_vovo, s₂_vovo, t_vovo, v₁_vovo, v₂_vovo)
+!!
+!! Generated function
+!!
+      implicit none
+!
+      class(qed_ccsd_2), intent(in) :: wf
+!
+      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(inout) :: omega_vovo
+!
+      real(dp), dimension(wf%n_o,wf%n_o), intent(in) :: F_oo, d_oo
+      real(dp), dimension(wf%n_o,wf%n_v), intent(in) :: F_ov, d_ov
+      real(dp), dimension(wf%n_v,wf%n_v), intent(in) :: F_vv, d_vv
+      real(dp), dimension(wf%n_o,wf%n_o,wf%n_o,wf%n_o), intent(in) :: g_oooo
+      real(dp), dimension(wf%n_o,wf%n_o,wf%n_o,wf%n_v), intent(in) :: L_ooov, g_ooov
+      real(dp), dimension(wf%n_o,wf%n_v,wf%n_o,wf%n_v), intent(in) :: L_ovov, g_ovov
+      real(dp), dimension(wf%n_v,wf%n_o,wf%n_o,wf%n_o), intent(in) :: g_vooo
+      real(dp), dimension(wf%n_v,wf%n_o,wf%n_o,wf%n_v), intent(in) :: g_voov
+      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(in) :: s₁_vovo, s₂_vovo, t_vovo, v₁_vovo, v₂_vovo
+      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_v), intent(in) :: g_vovv
+      real(dp), dimension(wf%n_v,wf%n_v,wf%n_o,wf%n_o), intent(in) :: g_vvoo
+      real(dp), dimension(wf%n_v,wf%n_v,wf%n_o,wf%n_v), intent(in) :: L_vvov, g_vvov
+      real(dp), dimension(wf%n_v,wf%n_v,wf%n_v,wf%n_v), intent(in) :: g_vvvv
+!
+      real(dp) :: X24, X26
+      real(dp), dimension(:,:), allocatable :: X2, X3, X4, X5, X17, X18, X19, X20, X21, X22, X23, X25, X27, X28, X29, X30, X31, X32, X33, X34, X45, X46, X47, X48, X49, X50, X51, X52, X53, X54, X55, X56, X57, X58, X59, X60, X123, X125, X147, X149, X154, X156, X163, X164, X165, X166, X167, X168
+      real(dp), dimension(:,:,:,:), allocatable :: X1, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X35, X36, X37, X38, X39, X40, X41, X42, X43, X44, X61, X62, X63, X64, X65, X66, X67, X68, X69, X70, X71, X72, X73, X74, X75, X76, X77, X78, X79, X80, X81, X82, X83, X84, X85, X86, X87, X88, X89, X90, X91, X92, X93, X94, X95, X96, X97, X98, X99, X100, X101, X102, X103, X104, X105, X106, X107, X108, X109, X110, X111, X112, X113, X114, X115, X116, X117, X118, X119, X120, X121, X122, X124, X126, X127, X128, X129, X130, X131, X132, X133, X134, X135, X136, X137, X138, X139, X140, X141, X142, X143, X144, X145, X146, X148, X150, X151, X152, X153, X155, X157, X158, X159, X160, X161, X162, X169, X170, X171, X172, X173, X174, X175, X176, X177, X178, X179, X180, X181, X182, X183, X184, X185, X186, X187
+!
+      real(dp), external :: ddot
+!
+      call daxpy(wf%n_v**2*wf%n_o**2, two*wf%qed%frequencies(wf%mode), s₂_vovo, 1, omega_vovo, 1)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         two, &
+         F_vv, &
+         wf%n_v, &
+         s₂_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         -two, &
+         s₂_vovo, &
+         wf%n_v**2*wf%n_o, &
+         F_oo, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         two, &
+         d_vv, &
+         wf%n_v, &
+         s₁_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         -two, &
+         s₁_vovo, &
+         wf%n_v**2*wf%n_o, &
+         d_oo, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         two, &
+         g_vovv, &
+         wf%n_v**2*wf%n_o, &
+         wf%s1_2, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%alloc(X1, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_4123(g_vooo, X1, wf%n_v, wf%n_o, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'T', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         -two, &
+         wf%s1_2, &
+         wf%n_v, &
+         X1, &
+         wf%n_v*wf%n_o**2, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X1)
+      call mem%alloc(X2, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_o, &
+         wf%n_v, &
+         two, &
+         d_vv, &
+         wf%n_v, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X2, &
+         wf%n_v)
+!
+!
+      call dger(wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X2, 1, &
+         wf%s1, 1, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X2)
+      call mem%alloc(X3, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_o, &
+         wf%n_v, &
+         four, &
+         d_vv, &
+         wf%n_v, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X3, &
+         wf%n_v)
+!
+!
+      call dger(wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X3, 1, &
+         wf%s1_2, 1, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X3)
+      call mem%alloc(X4, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_o, &
+         wf%n_o, &
+         -four, &
+         wf%s1, &
+         wf%n_v, &
+         d_oo, &
+         wf%n_o, &
+         zero, &
+         X4, &
+         wf%n_v)
+!
+!
+      call dger(wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X4, 1, &
+         wf%s1_2, 1, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X4)
+      call mem%alloc(X5, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_o, &
+         wf%n_o, &
+         -two, &
+         wf%s1_2, &
+         wf%n_v, &
+         d_oo, &
+         wf%n_o, &
+         zero, &
+         X5, &
+         wf%n_v)
+!
+!
+      call dger(wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X5, 1, &
+         wf%s1, 1, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X5)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         four*wf%s0_1, &
+         d_vv, &
+         wf%n_v, &
+         s₁_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         -four*wf%s0_1, &
+         s₁_vovo, &
+         wf%n_v**2*wf%n_o, &
+         d_oo, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         two*wf%s0, &
+         d_vv, &
+         wf%n_v, &
+         s₂_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         -two*wf%s0, &
+         s₂_vovo, &
+         wf%n_v**2*wf%n_o, &
+         d_oo, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%alloc(X6, wf%n_v, wf%n_v, wf%n_v, wf%n_v)
+      call sort_to_1324(g_vvvv, X6, wf%n_v, wf%n_v, wf%n_v, wf%n_v)
+      call mem%alloc(X7, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(s₂_vovo, X7, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X8, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2, &
+         wf%n_o**2, &
+         wf%n_v**2, &
+         one, &
+         X6, &
+         wf%n_v**2, &
+         X7, &
+         wf%n_v**2, &
+         zero, &
+         X8, &
+         wf%n_v**2)
+!
+      call mem%dealloc(X6)
+      call mem%dealloc(X7)
+      call add_1324_to_1234(one, X8, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X8)
+      call mem%alloc(X9, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1423(g_vvoo, X9, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         -two, &
+         X9, &
+         wf%n_v*wf%n_o, &
+         s₂_vovo, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X9)
+      call mem%alloc(X10, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1432(g_vvoo, X10, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call mem%alloc(X11, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(s₂_vovo, X11, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X12, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         -two, &
+         X10, &
+         wf%n_v*wf%n_o, &
+         X11, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X12, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X10)
+      call mem%dealloc(X11)
+      call add_1432_to_1234(one, X12, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X12)
+      call mem%alloc(X13, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+      call sort_to_1324(g_oooo, X13, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+      call mem%alloc(X14, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(s₂_vovo, X14, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X15, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2, &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         one, &
+         X14, &
+         wf%n_v**2, &
+         X13, &
+         wf%n_o**2, &
+         zero, &
+         X15, &
+         wf%n_v**2)
+!
+      call mem%dealloc(X13)
+      call mem%dealloc(X14)
+      call add_1324_to_1234(one, X15, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X15)
+      call mem%alloc(X16, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1243(g_voov, X16, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         two, &
+         X16, &
+         wf%n_v*wf%n_o, &
+         v₂_vovo, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X16)
+      call mem%alloc(X17, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_o, &
+         -two, &
+         F_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X17, &
+         wf%n_v)
+!
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X17, &
+         wf%n_v, &
+         s₁_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X17)
+      call mem%alloc(X18, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         F_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X18, &
+         wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         s₁_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X18, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X18)
+      call mem%alloc(X19, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_o, &
+         -two, &
+         F_ov, &
+         wf%n_o, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X19, &
+         wf%n_v)
+!
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X19, &
+         wf%n_v, &
+         t_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X19)
+      call mem%alloc(X20, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         F_ov, &
+         wf%n_o, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X20, &
+         wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         t_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X20, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X20)
+      call mem%alloc(X21, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_o, &
+         -six, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X21, &
+         wf%n_v)
+!
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X21, &
+         wf%n_v, &
+         s₂_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X21)
+      call mem%alloc(X22, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -six, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X22, &
+         wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         s₂_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X22, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X22)
+      call mem%alloc(X23, wf%n_v, wf%n_o)
+      call sort_to_21(d_ov, X23, wf%n_o, wf%n_v)
+      X24 = four * ddot(wf%n_v*wf%n_o, X23, 1, wf%s1, 1)
+      call mem%dealloc(X23)
+      call daxpy(wf%n_v**2*wf%n_o**2, X24, s₂_vovo, 1, omega_vovo, 1)
+      call mem%alloc(X25, wf%n_v, wf%n_o)
+      call sort_to_21(d_ov, X25, wf%n_o, wf%n_v)
+      X26 = two * ddot(wf%n_v*wf%n_o, X25, 1, wf%s1_2, 1)
+      call mem%dealloc(X25)
+      call daxpy(wf%n_v**2*wf%n_o**2, X26, s₁_vovo, 1, omega_vovo, 1)
+      call mem%alloc(X27, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -six, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X27, &
+         wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         s₁_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X27, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X27)
+      call mem%alloc(X28, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_o, &
+         -six, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X28, &
+         wf%n_v)
+!
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X28, &
+         wf%n_v, &
+         s₁_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X28)
+      call mem%alloc(X29, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_o, &
+         -two, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X29, &
+         wf%n_v)
+!
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X29, &
+         wf%n_v, &
+         t_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X29)
+      call mem%alloc(X30, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X30, &
+         wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         t_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X30, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X30)
+      call mem%alloc(X31, wf%n_v, wf%n_o)
+      call sort_to_21(d_ov, X31, wf%n_o, wf%n_v)
+      call mem%alloc(X32, wf%n_v, wf%n_o)
+!
+      call dgemv('N', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         two, &
+         v₂_vovo, &
+         wf%n_v*wf%n_o, &
+         X31, 1, &
+         zero, &
+         X32, 1)
+!
+      call mem%dealloc(X31)
+!
+      call dger(wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         wf%s1, 1, &
+         X32, 1, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X32)
+      call mem%alloc(X33, wf%n_v, wf%n_o)
+      call sort_to_21(d_ov, X33, wf%n_o, wf%n_v)
+      call mem%alloc(X34, wf%n_v, wf%n_o)
+!
+      call dgemv('N', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         four, &
+         v₁_vovo, &
+         wf%n_v*wf%n_o, &
+         X33, 1, &
+         zero, &
+         X34, 1)
+!
+      call mem%dealloc(X33)
+!
+      call dger(wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         wf%s1_2, 1, &
+         X34, 1, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X34)
+      call mem%alloc(X35, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         -two, &
+         wf%s1, &
+         wf%n_v, &
+         g_voov, &
+         wf%n_v*wf%n_o**2, &
+         zero, &
+         X35, &
+         wf%n_o)
+!
+!
+      call dgemm('N', 'T', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X35, &
+         wf%n_v*wf%n_o**2, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X35)
+      call mem%alloc(X36, wf%n_v, wf%n_v, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**3, &
+         wf%n_o, &
+         wf%n_v, &
+         one, &
+         g_vvvv, &
+         wf%n_v**3, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X36, &
+         wf%n_v**3)
+!
+      call mem%alloc(X37, wf%n_v, wf%n_v, wf%n_o, wf%n_v)
+      call sort_to_1342(X36, X37, wf%n_v, wf%n_v, wf%n_v, wf%n_o)
+      call mem%dealloc(X36)
+      call mem%alloc(X38, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         one, &
+         X37, &
+         wf%n_v**2*wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X38, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X37)
+      call add_1342_to_1234(one, X38, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X38)
+      call mem%alloc(X39, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1342(g_vvoo, X39, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call mem%alloc(X40, wf%n_v, wf%n_o, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         X39, &
+         wf%n_v*wf%n_o**2, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X40, &
+         wf%n_v*wf%n_o**2)
+!
+      call mem%dealloc(X39)
+      call mem%alloc(X41, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_3142(X40, X41, wf%n_v, wf%n_o, wf%n_o, wf%n_o)
+      call mem%dealloc(X40)
+!
+      call dgemm('N', 'T', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X41, &
+         wf%n_v*wf%n_o**2, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X41)
+      call mem%alloc(X42, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+      call sort_to_1243(g_oooo, X42, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+      call mem%alloc(X43, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+!
+      call dgemm('N', 'T', &
+         wf%n_o**3, &
+         wf%n_v, &
+         wf%n_o, &
+         one, &
+         X42, &
+         wf%n_o**3, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X43, &
+         wf%n_o**3)
+!
+      call mem%dealloc(X42)
+      call mem%alloc(X44, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1243(X43, X44, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+      call mem%dealloc(X43)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X44, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X44)
+      call mem%alloc(X45, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X45, &
+         wf%n_o)
+!
+      call mem%alloc(X46, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X45, &
+         wf%n_o, &
+         zero, &
+         X46, &
+         wf%n_v)
+!
+      call mem%dealloc(X45)
+!
+      call dger(wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         wf%s1, 1, &
+         X46, 1, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X46)
+      call mem%alloc(X47, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_o, &
+         -two, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X47, &
+         wf%n_v)
+!
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         wf%s0, &
+         X47, &
+         wf%n_v, &
+         s₁_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X47)
+      call mem%alloc(X48, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X48, &
+         wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         wf%s0, &
+         s₁_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X48, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X48)
+      call mem%alloc(X49, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_o, &
+         -four, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X49, &
+         wf%n_v)
+!
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         wf%s0_1, &
+         X49, &
+         wf%n_v, &
+         t_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X49)
+      call mem%alloc(X50, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -four, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X50, &
+         wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         wf%s0_1, &
+         t_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X50, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X50)
+      call mem%alloc(X51, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_o, &
+         -two, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X51, &
+         wf%n_v)
+!
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         wf%s0, &
+         X51, &
+         wf%n_v, &
+         t_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X51)
+      call mem%alloc(X52, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         d_ov, &
+         wf%n_o, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X52, &
+         wf%n_o)
+!
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         wf%s0, &
+         t_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X52, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X52)
+      call mem%alloc(X53, wf%n_o, wf%n_v)
+      call sort_to_21(wf%s1, X53, wf%n_v, wf%n_o)
+      call mem%alloc(X54, wf%n_v, wf%n_v)
+!
+      call dgemv('N', &
+         wf%n_v**2, &
+         wf%n_v*wf%n_o, &
+         two, &
+         L_vvov, &
+         wf%n_v**2, &
+         X53, 1, &
+         zero, &
+         X54, 1)
+!
+      call mem%dealloc(X53)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X54, &
+         wf%n_v, &
+         s₁_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X54)
+      call mem%alloc(X55, wf%n_o, wf%n_v)
+      call sort_to_21(wf%s1, X55, wf%n_v, wf%n_o)
+      call mem%alloc(X56, wf%n_o, wf%n_o)
+!
+      call dgemv('N', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         -two, &
+         L_ooov, &
+         wf%n_o**2, &
+         X55, 1, &
+         zero, &
+         X56, 1)
+!
+      call mem%dealloc(X55)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         s₁_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X56, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X56)
+      call mem%alloc(X57, wf%n_o, wf%n_v)
+      call sort_to_21(wf%s1_2, X57, wf%n_v, wf%n_o)
+      call mem%alloc(X58, wf%n_v, wf%n_v)
+!
+      call dgemv('N', &
+         wf%n_v**2, &
+         wf%n_v*wf%n_o, &
+         two, &
+         L_vvov, &
+         wf%n_v**2, &
+         X57, 1, &
+         zero, &
+         X58, 1)
+!
+      call mem%dealloc(X57)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X58, &
+         wf%n_v, &
+         t_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X58)
+      call mem%alloc(X59, wf%n_o, wf%n_v)
+      call sort_to_21(wf%s1_2, X59, wf%n_v, wf%n_o)
+      call mem%alloc(X60, wf%n_o, wf%n_o)
+!
+      call dgemv('N', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         -two, &
+         L_ooov, &
+         wf%n_o**2, &
+         X59, 1, &
+         zero, &
+         X60, 1)
+!
+      call mem%dealloc(X59)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         t_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X60, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X60)
+      call mem%alloc(X61, wf%n_v, wf%n_o, wf%n_v, wf%n_v)
+      call sort_to_1324(g_vvov, X61, wf%n_v, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X62, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1342(s₁_vovo, X62, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X63, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v**2, &
+         -two, &
+         X62, &
+         wf%n_v**2, &
+         X61, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X63, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X61)
+      call mem%dealloc(X62)
+      call mem%alloc(X64, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(X63, X64, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X63)
+!
+      call dgemm('N', 'T', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X64, &
+         wf%n_v*wf%n_o**2, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X64)
+      call mem%alloc(X65, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         g_vvov, &
+         wf%n_v**2*wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X65, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%alloc(X66, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1423(X65, X66, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call mem%dealloc(X65)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X66, &
+         wf%n_v*wf%n_o, &
+         s₁_vovo, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X66)
+      call mem%alloc(X67, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o, &
+         wf%n_v**2*wf%n_o, &
+         wf%n_v, &
+         -two, &
+         wf%s1, &
+         wf%n_v, &
+         g_vvov, &
+         wf%n_v**2*wf%n_o, &
+         zero, &
+         X67, &
+         wf%n_o)
+!
+      call mem%alloc(X68, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(s₁_vovo, X68, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X69, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X68, &
+         wf%n_v*wf%n_o, &
+         X67, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X69, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X67)
+      call mem%dealloc(X68)
+      call add_1423_to_1234(one, X69, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X69)
+      call mem%alloc(X70, wf%n_v, wf%n_o, wf%n_o, wf%n_o)
+      call sort_to_4132(g_ooov, X70, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+      call mem%alloc(X71, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         two, &
+         X70, &
+         wf%n_v*wf%n_o, &
+         s₁_vovo, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X71, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X70)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X71, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X71)
+      call mem%alloc(X72, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1432(g_ooov, X72, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+      call mem%alloc(X73, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(s₁_vovo, X73, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X74, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         two, &
+         X72, &
+         wf%n_v*wf%n_o, &
+         X73, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X74, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X72)
+      call mem%dealloc(X73)
+      call mem%alloc(X75, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(X74, X75, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X74)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X75, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X75)
+      call mem%alloc(X76, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o**3, &
+         wf%n_o, &
+         wf%n_v, &
+         two, &
+         g_ooov, &
+         wf%n_o**3, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X76, &
+         wf%n_o**3)
+!
+      call mem%alloc(X77, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+      call sort_to_1324(X76, X77, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+      call mem%dealloc(X76)
+      call mem%alloc(X78, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(s₁_vovo, X78, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X79, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2, &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         one, &
+         X78, &
+         wf%n_v**2, &
+         X77, &
+         wf%n_o**2, &
+         zero, &
+         X79, &
+         wf%n_v**2)
+!
+      call mem%dealloc(X77)
+      call mem%dealloc(X78)
+      call add_1324_to_1234(one, X79, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X79)
+      call mem%alloc(X80, wf%n_v, wf%n_o, wf%n_v, wf%n_v)
+      call sort_to_1342(g_vvov, X80, wf%n_v, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X81, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         two, &
+         X80, &
+         wf%n_v**2*wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X81, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X80)
+      call mem%alloc(X82, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(X81, X82, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X81)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X82, &
+         wf%n_v*wf%n_o, &
+         v₁_vovo, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X82)
+      call mem%alloc(X83, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1243(g_ooov, X83, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+      call mem%alloc(X84, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         -two, &
+         X83, &
+         wf%n_o**2, &
+         v₁_vovo, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X84, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X83)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X84, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X84)
+      call mem%alloc(X85, wf%n_v, wf%n_o, wf%n_v, wf%n_v)
+      call sort_to_1324(g_vvov, X85, wf%n_v, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X86, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1342(t_vovo, X86, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X87, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v**2, &
+         -two, &
+         X86, &
+         wf%n_v**2, &
+         X85, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X87, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X85)
+      call mem%dealloc(X86)
+      call mem%alloc(X88, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(X87, X88, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X87)
+!
+      call dgemm('N', 'T', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1_2, &
+         wf%n_v, &
+         X88, &
+         wf%n_v*wf%n_o**2, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X88)
+      call mem%alloc(X89, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         g_vvov, &
+         wf%n_v**2*wf%n_o, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X89, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%alloc(X90, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1423(X89, X90, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call mem%dealloc(X89)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X90, &
+         wf%n_v*wf%n_o, &
+         t_vovo, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X90)
+      call mem%alloc(X91, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o, &
+         wf%n_v**2*wf%n_o, &
+         wf%n_v, &
+         -two, &
+         wf%s1_2, &
+         wf%n_v, &
+         g_vvov, &
+         wf%n_v**2*wf%n_o, &
+         zero, &
+         X91, &
+         wf%n_o)
+!
+      call mem%alloc(X92, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(t_vovo, X92, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X93, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X92, &
+         wf%n_v*wf%n_o, &
+         X91, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X93, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X91)
+      call mem%dealloc(X92)
+      call add_1423_to_1234(one, X93, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X93)
+      call mem%alloc(X94, wf%n_v, wf%n_o, wf%n_o, wf%n_o)
+      call sort_to_4132(g_ooov, X94, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+      call mem%alloc(X95, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         two, &
+         X94, &
+         wf%n_v*wf%n_o, &
+         t_vovo, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X95, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X94)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1_2, &
+         wf%n_v, &
+         X95, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X95)
+      call mem%alloc(X96, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1432(g_ooov, X96, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+      call mem%alloc(X97, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(t_vovo, X97, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X98, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         two, &
+         X96, &
+         wf%n_v*wf%n_o, &
+         X97, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X98, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X96)
+      call mem%dealloc(X97)
+      call mem%alloc(X99, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(X98, X99, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X98)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1_2, &
+         wf%n_v, &
+         X99, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X99)
+      call mem%alloc(X100, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o**3, &
+         wf%n_o, &
+         wf%n_v, &
+         two, &
+         g_ooov, &
+         wf%n_o**3, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X100, &
+         wf%n_o**3)
+!
+      call mem%alloc(X101, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+      call sort_to_1324(X100, X101, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+      call mem%dealloc(X100)
+      call mem%alloc(X102, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(t_vovo, X102, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X103, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2, &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         one, &
+         X102, &
+         wf%n_v**2, &
+         X101, &
+         wf%n_o**2, &
+         zero, &
+         X103, &
+         wf%n_v**2)
+!
+      call mem%dealloc(X101)
+      call mem%dealloc(X102)
+      call add_1324_to_1234(one, X103, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X103)
+      call mem%alloc(X104, wf%n_v, wf%n_o, wf%n_v, wf%n_v)
+      call sort_to_1342(g_vvov, X104, wf%n_v, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X105, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         two, &
+         X104, &
+         wf%n_v**2*wf%n_o, &
+         wf%s1_2, &
+         wf%n_v, &
+         zero, &
+         X105, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X104)
+      call mem%alloc(X106, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(X105, X106, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X105)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X106, &
+         wf%n_v*wf%n_o, &
+         wf%u_aibj, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X106)
+      call mem%alloc(X107, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1243(g_ooov, X107, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+      call mem%alloc(X108, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         -two, &
+         X107, &
+         wf%n_o**2, &
+         wf%u_aibj, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X108, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X107)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1_2, &
+         wf%n_v, &
+         X108, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X108)
+      call mem%alloc(X109, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+      call sort_to_1423(g_ovov, X109, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X110, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X109, &
+         wf%n_v*wf%n_o, &
+         s₁_vovo, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X110, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X109)
+      call mem%alloc(X111, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(s₁_vovo, X111, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X110, &
+         wf%n_v*wf%n_o, &
+         X111, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X110)
+      call mem%dealloc(X111)
+      call mem%alloc(X112, wf%n_o, wf%n_o, wf%n_v, wf%n_v)
+      call sort_to_1324(g_ovov, X112, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X113, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(s₁_vovo, X113, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X114, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         wf%n_v**2, &
+         one, &
+         X112, &
+         wf%n_o**2, &
+         X113, &
+         wf%n_v**2, &
+         zero, &
+         X114, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X112)
+      call mem%dealloc(X113)
+      call mem%alloc(X115, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(s₁_vovo, X115, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X116, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2, &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         one, &
+         X115, &
+         wf%n_v**2, &
+         X114, &
+         wf%n_o**2, &
+         zero, &
+         X116, &
+         wf%n_v**2)
+!
+      call mem%dealloc(X114)
+      call mem%dealloc(X115)
+      call add_1324_to_1234(one, X116, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X116)
+      call mem%alloc(X117, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call sort_to_1432(g_ovov, X117, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X118, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(s₁_vovo, X118, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X119, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X117, &
+         wf%n_v*wf%n_o, &
+         X118, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X119, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X117)
+      call mem%dealloc(X118)
+      call mem%alloc(X120, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(s₁_vovo, X120, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X121, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X119, &
+         wf%n_v*wf%n_o, &
+         X120, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X121, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X119)
+      call mem%dealloc(X120)
+      call add_1432_to_1234(one, X121, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X121)
+      call mem%alloc(X122, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(v₁_vovo, X122, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X123, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v**2*wf%n_o, &
+         -two, &
+         g_ovov, &
+         wf%n_o, &
+         X122, &
+         wf%n_v**2*wf%n_o, &
+         zero, &
+         X123, &
+         wf%n_o)
+!
+      call mem%dealloc(X122)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         s₁_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X123, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X123)
+      call mem%alloc(X124, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call sort_to_1432(g_ovov, X124, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X125, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         -two, &
+         X124, &
+         wf%n_v*wf%n_o**2, &
+         v₁_vovo, &
+         wf%n_v, &
+         zero, &
+         X125, &
+         wf%n_v)
+!
+      call mem%dealloc(X124)
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X125, &
+         wf%n_v, &
+         s₁_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X125)
+      call mem%alloc(X126, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_4123(g_ovov, X126, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X127, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         -one, &
+         X126, &
+         wf%n_v*wf%n_o, &
+         v₁_vovo, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X127, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X126)
+!
+      call dgemm('T', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X127, &
+         wf%n_v*wf%n_o, &
+         s₁_vovo, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X127)
+      call mem%alloc(X128, wf%n_o, wf%n_o, wf%n_v, wf%n_v)
+      call sort_to_1324(g_ovov, X128, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X129, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(t_vovo, X129, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X130, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         wf%n_v**2, &
+         one, &
+         X128, &
+         wf%n_o**2, &
+         X129, &
+         wf%n_v**2, &
+         zero, &
+         X130, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X128)
+      call mem%dealloc(X129)
+      call mem%alloc(X131, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(s₂_vovo, X131, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X132, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2, &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         one, &
+         X131, &
+         wf%n_v**2, &
+         X130, &
+         wf%n_o**2, &
+         zero, &
+         X132, &
+         wf%n_v**2)
+!
+      call mem%dealloc(X130)
+      call mem%dealloc(X131)
+      call add_1324_to_1234(one, X132, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X132)
+      call mem%alloc(X133, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+      call sort_to_1423(g_ovov, X133, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X134, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         two, &
+         X133, &
+         wf%n_v*wf%n_o, &
+         t_vovo, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X134, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X133)
+      call mem%alloc(X135, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(s₂_vovo, X135, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X135, &
+         wf%n_v*wf%n_o, &
+         X134, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X134)
+      call mem%dealloc(X135)
+      call mem%alloc(X136, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call sort_to_1432(g_ovov, X136, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X137, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(t_vovo, X137, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X138, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         two, &
+         X136, &
+         wf%n_v*wf%n_o, &
+         X137, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X138, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X136)
+      call mem%dealloc(X137)
+      call mem%alloc(X139, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(s₂_vovo, X139, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X140, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X139, &
+         wf%n_v*wf%n_o, &
+         X138, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X140, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X138)
+      call mem%dealloc(X139)
+      call add_1432_to_1234(one, X140, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X140)
+      call mem%alloc(X141, wf%n_o, wf%n_o, wf%n_v, wf%n_v)
+      call sort_to_1324(g_ovov, X141, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X142, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(s₂_vovo, X142, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X143, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         wf%n_v**2, &
+         one, &
+         X141, &
+         wf%n_o**2, &
+         X142, &
+         wf%n_v**2, &
+         zero, &
+         X143, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X141)
+      call mem%dealloc(X142)
+      call mem%alloc(X144, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(t_vovo, X144, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X145, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2, &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         one, &
+         X144, &
+         wf%n_v**2, &
+         X143, &
+         wf%n_o**2, &
+         zero, &
+         X145, &
+         wf%n_v**2)
+!
+      call mem%dealloc(X143)
+      call mem%dealloc(X144)
+      call add_1324_to_1234(one, X145, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X145)
+      call mem%alloc(X146, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(wf%u_aibj, X146, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X147, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v**2*wf%n_o, &
+         -two, &
+         g_ovov, &
+         wf%n_o, &
+         X146, &
+         wf%n_v**2*wf%n_o, &
+         zero, &
+         X147, &
+         wf%n_o)
+!
+      call mem%dealloc(X146)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         s₂_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X147, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X147)
+      call mem%alloc(X148, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call sort_to_1432(g_ovov, X148, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X149, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         -two, &
+         X148, &
+         wf%n_v*wf%n_o**2, &
+         wf%u_aibj, &
+         wf%n_v, &
+         zero, &
+         X149, &
+         wf%n_v)
+!
+      call mem%dealloc(X148)
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X149, &
+         wf%n_v, &
+         s₂_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X149)
+      call mem%alloc(X150, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+      call sort_to_1423(g_ovov, X150, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X151, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         -two, &
+         s₂_vovo, &
+         wf%n_v*wf%n_o, &
+         X150, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X151, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X150)
+      call mem%alloc(X152, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1243(X151, X152, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call mem%dealloc(X151)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X152, &
+         wf%n_v*wf%n_o, &
+         wf%u_aibj, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X152)
+      call mem%alloc(X153, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(v₂_vovo, X153, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X154, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v**2*wf%n_o, &
+         -two, &
+         g_ovov, &
+         wf%n_o, &
+         X153, &
+         wf%n_v**2*wf%n_o, &
+         zero, &
+         X154, &
+         wf%n_o)
+!
+      call mem%dealloc(X153)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         t_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X154, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X154)
+      call mem%alloc(X155, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call sort_to_1432(g_ovov, X155, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X156, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         -two, &
+         X155, &
+         wf%n_v*wf%n_o**2, &
+         v₂_vovo, &
+         wf%n_v, &
+         zero, &
+         X156, &
+         wf%n_v)
+!
+      call mem%dealloc(X155)
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X156, &
+         wf%n_v, &
+         t_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X156)
+      call mem%alloc(X157, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+      call sort_to_1243(g_ovov, X157, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X158, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         two, &
+         v₂_vovo, &
+         wf%n_v*wf%n_o, &
+         X157, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X158, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X157)
+      call mem%alloc(X159, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1243(X158, X159, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call mem%dealloc(X158)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         wf%u_aibj, &
+         wf%n_v*wf%n_o, &
+         X159, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X159)
+      call mem%alloc(X160, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+      call sort_to_1243(g_ovov, X160, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X161, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         v₁_vovo, &
+         wf%n_v*wf%n_o, &
+         X160, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X161, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X160)
+      call mem%alloc(X162, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1243(X161, X162, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call mem%dealloc(X161)
+!
+      call dgemm('N', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         v₁_vovo, &
+         wf%n_v*wf%n_o, &
+         X162, &
+         wf%n_v*wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X162)
+      call mem%alloc(X163, wf%n_o, wf%n_v)
+      call sort_to_21(wf%s1, X163, wf%n_v, wf%n_o)
+      call mem%alloc(X164, wf%n_o, wf%n_v)
+!
+      call dgemv('N', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         -two, &
+         L_ovov, &
+         wf%n_v*wf%n_o, &
+         X163, 1, &
+         zero, &
+         X164, 1)
+!
+      call mem%dealloc(X163)
+      call mem%alloc(X165, wf%n_v, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_v, &
+         wf%n_v, &
+         wf%n_o, &
+         one, &
+         X164, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X165, &
+         wf%n_v)
+!
+      call mem%dealloc(X164)
+!
+      call dgemm('T', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         one, &
+         X165, &
+         wf%n_v, &
+         t_vovo, &
+         wf%n_v, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X165)
+      call mem%alloc(X166, wf%n_o, wf%n_v)
+      call sort_to_21(wf%s1, X166, wf%n_v, wf%n_o)
+      call mem%alloc(X167, wf%n_o, wf%n_v)
+!
+      call dgemv('N', &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         -two, &
+         L_ovov, &
+         wf%n_v*wf%n_o, &
+         X166, 1, &
+         zero, &
+         X167, 1)
+!
+      call mem%dealloc(X166)
+      call mem%alloc(X168, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o, &
+         wf%n_o, &
+         wf%n_v, &
+         one, &
+         X167, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X168, &
+         wf%n_o)
+!
+      call mem%dealloc(X167)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2*wf%n_o, &
+         wf%n_o, &
+         wf%n_o, &
+         one, &
+         t_vovo, &
+         wf%n_v**2*wf%n_o, &
+         X168, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v**2*wf%n_o)
+!
+      call mem%dealloc(X168)
+      call mem%alloc(X169, wf%n_o, wf%n_o, wf%n_v, wf%n_v)
+      call sort_to_1324(g_ovov, X169, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X170, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1342(t_vovo, X170, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X171, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         wf%n_v**2, &
+         one, &
+         X169, &
+         wf%n_o**2, &
+         X170, &
+         wf%n_v**2, &
+         zero, &
+         X171, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X169)
+      call mem%dealloc(X170)
+      call mem%alloc(X172, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+!
+      call dgemm('T', 'T', &
+         wf%n_o**3, &
+         wf%n_v, &
+         wf%n_o, &
+         one, &
+         X171, &
+         wf%n_o, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X172, &
+         wf%n_o**3)
+!
+      call mem%dealloc(X171)
+      call mem%alloc(X173, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1243(X172, X173, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+      call mem%dealloc(X172)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X173, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X173)
+      call mem%alloc(X174, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         wf%n_v, &
+         two, &
+         g_ovov, &
+         wf%n_v*wf%n_o**2, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X174, &
+         wf%n_v*wf%n_o**2)
+!
+      call mem%alloc(X175, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1423(X174, X175, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+      call mem%dealloc(X174)
+      call mem%alloc(X176, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('N', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X175, &
+         wf%n_o**2, &
+         t_vovo, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X176, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X175)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X176, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X176)
+      call mem%alloc(X177, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_v, &
+         two, &
+         wf%s1, &
+         wf%n_v, &
+         g_ovov, &
+         wf%n_v*wf%n_o**2, &
+         zero, &
+         X177, &
+         wf%n_o)
+!
+      call mem%alloc(X178, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1423(t_vovo, X178, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X179, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_v*wf%n_o, &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X178, &
+         wf%n_v*wf%n_o, &
+         X177, &
+         wf%n_o**2, &
+         zero, &
+         X179, &
+         wf%n_v*wf%n_o)
+!
+      call mem%dealloc(X177)
+      call mem%dealloc(X178)
+!
+      call dgemm('N', 'T', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X179, &
+         wf%n_v*wf%n_o**2, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X179)
+      call mem%alloc(X180, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         wf%n_v, &
+         one, &
+         g_ovov, &
+         wf%n_v*wf%n_o**2, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X180, &
+         wf%n_v*wf%n_o**2)
+!
+      call mem%alloc(X181, wf%n_o, wf%n_o, wf%n_o, wf%n_v)
+      call sort_to_1342(X180, X181, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+      call mem%dealloc(X180)
+      call mem%alloc(X182, wf%n_o, wf%n_o, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_o**3, &
+         wf%n_o, &
+         wf%n_v, &
+         one, &
+         X181, &
+         wf%n_o**3, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X182, &
+         wf%n_o**3)
+!
+      call mem%dealloc(X181)
+      call mem%alloc(X183, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+      call sort_to_1324(t_vovo, X183, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X184, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v**2, &
+         wf%n_o**2, &
+         wf%n_o**2, &
+         one, &
+         X183, &
+         wf%n_v**2, &
+         X182, &
+         wf%n_o**2, &
+         zero, &
+         X184, &
+         wf%n_v**2)
+!
+      call mem%dealloc(X182)
+      call mem%dealloc(X183)
+      call add_1342_to_1234(one, X184, omega_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%dealloc(X184)
+      call mem%alloc(X185, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+!
+      call dgemm('N', 'N', &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         wf%n_v, &
+         -two, &
+         g_ovov, &
+         wf%n_v*wf%n_o**2, &
+         wf%s1, &
+         wf%n_v, &
+         zero, &
+         X185, &
+         wf%n_v*wf%n_o**2)
+!
+      call mem%alloc(X186, wf%n_v, wf%n_o, wf%n_o, wf%n_o)
+      call sort_to_2134(X185, X186, wf%n_o, wf%n_v, wf%n_o, wf%n_o)
+      call mem%dealloc(X185)
+      call mem%alloc(X187, wf%n_o, wf%n_o, wf%n_v, wf%n_o)
+!
+      call dgemm('T', 'T', &
+         wf%n_o**2, &
+         wf%n_v*wf%n_o, &
+         wf%n_v*wf%n_o, &
+         one, &
+         X186, &
+         wf%n_v*wf%n_o, &
+         wf%u_aibj, &
+         wf%n_v*wf%n_o, &
+         zero, &
+         X187, &
+         wf%n_o**2)
+!
+      call mem%dealloc(X186)
+!
+      call dgemm('N', 'N', &
+         wf%n_v, &
+         wf%n_v*wf%n_o**2, &
+         wf%n_o, &
+         one, &
+         wf%s1, &
+         wf%n_v, &
+         X187, &
+         wf%n_o, &
+         one, &
+         omega_vovo, &
+         wf%n_v)
+!
+      call mem%dealloc(X187)
+!
+   end subroutine omega_2_aibj_qed_ccsd_2
