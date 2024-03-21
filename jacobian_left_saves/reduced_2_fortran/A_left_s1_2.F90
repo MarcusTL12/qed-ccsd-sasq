@@ -1,4 +1,4 @@
-   subroutine jacobian_transpose_s1_2_qed_ccsd_2(wf, sigma_vo, F_ov, L_ovoo, L_ovvv, bs2_vovo, bs_vo, bs_vovo, bγ, bγ2, d_oo, d_ov, d_vo, d_vv, g_ooov, g_oovo, g_ovoo, g_ovvv, g_vvov, g_vvvo, s₁_vovo, t_vovo, v₁_vovo)
+   subroutine jacobian_transpose_s1_2_qed_ccsd_2(wf, sigma_vo, F_ov, L_ovoo, L_ovvv, bs, bs2_vovo, bs_2, bs_vo, bs_vovo, d_oo, d_ov, d_vo, d_vv, g_ooov, g_oovo, g_ovoo, g_ovvv, g_vvov, g_vvvo, s2, t_vovo, v_vovo)
 !!
 !! Generated function
 !!
@@ -8,7 +8,7 @@
 !
       real(dp), dimension(wf%n_v,wf%n_o), intent(inout) :: sigma_vo
 !
-      real(dp), intent(in) :: bγ, bγ2
+      real(dp), intent(in) :: bs, bs_2
       real(dp), dimension(wf%n_o,wf%n_o), intent(in) :: d_oo
       real(dp), dimension(wf%n_o,wf%n_v), intent(in) :: F_ov, d_ov
       real(dp), dimension(wf%n_v,wf%n_o), intent(in) :: bs_vo, d_vo
@@ -17,7 +17,7 @@
       real(dp), dimension(wf%n_o,wf%n_o,wf%n_v,wf%n_o), intent(in) :: g_oovo
       real(dp), dimension(wf%n_o,wf%n_v,wf%n_o,wf%n_o), intent(in) :: L_ovoo, g_ovoo
       real(dp), dimension(wf%n_o,wf%n_v,wf%n_v,wf%n_v), intent(in) :: L_ovvv, g_ovvv
-      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(in) :: bs2_vovo, bs_vovo, s₁_vovo, t_vovo, v₁_vovo
+      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(in) :: bs2_vovo, bs_vovo, s2, t_vovo, v_vovo
       real(dp), dimension(wf%n_v,wf%n_v,wf%n_o,wf%n_v), intent(in) :: g_vvov
       real(dp), dimension(wf%n_v,wf%n_v,wf%n_v,wf%n_o), intent(in) :: g_vvvo
 !
@@ -29,9 +29,9 @@
 !
       real(dp), external :: ddot
 !
-      call add_21_to_12(four*bγ2, F_ov, sigma_vo, wf%n_v, wf%n_o)
-      call add_21_to_12(four*bγ, d_ov, sigma_vo, wf%n_v, wf%n_o)
-      call add_21_to_12(four*bγ2*wf%s0, d_ov, sigma_vo, wf%n_v, wf%n_o)
+      call add_21_to_12(four*bs_2, F_ov, sigma_vo, wf%n_v, wf%n_o)
+      call add_21_to_12(four*bs, d_ov, sigma_vo, wf%n_v, wf%n_o)
+      call add_21_to_12(four*bs_2*wf%s0, d_ov, sigma_vo, wf%n_v, wf%n_o)
       X1 = zero
 !
       do i1 = 1, wf%n_o
@@ -376,7 +376,7 @@
          -six, &
          bs2_vovo, &
          wf%n_v, &
-         s₁_vovo, &
+         s2, &
          wf%n_v, &
          zero, &
          X14, &
@@ -406,7 +406,7 @@
          -six, &
          bs2_vovo, &
          wf%n_v**2*wf%n_o, &
-         s₁_vovo, &
+         s2, &
          wf%n_v**2*wf%n_o, &
          zero, &
          X15, &
@@ -427,7 +427,7 @@
          wf%n_v)
 !
       call mem%dealloc(X15)
-      X16 = two * ddot(wf%n_v**2*wf%n_o**2, bs2_vovo, 1, s₁_vovo, 1)
+      X16 = two * ddot(wf%n_v**2*wf%n_o**2, bs2_vovo, 1, s2, 1)
       call add_21_to_12(X16, d_ov, sigma_vo, wf%n_v, wf%n_o)
       call mem%alloc(X17, wf%n_v, wf%n_o)
       call sort_to_21(d_ov, X17, wf%n_o, wf%n_v)
@@ -437,7 +437,7 @@
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          four, &
-         v₁_vovo, &
+         v_vovo, &
          wf%n_v*wf%n_o, &
          X17, 1, &
          zero, &

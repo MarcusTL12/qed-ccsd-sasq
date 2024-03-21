@@ -1,4 +1,4 @@
-   subroutine jacobian_transpose_s0_qed_ccsd_2(wf, sigma, bs2_vovo, bs_vo, bγ2, d_oo, d_ov, d_vv, s₁_vovo, s₂_vovo, t_vovo, v₁_vovo)
+   subroutine jacobian_transpose_s0_qed_ccsd_2(wf, sigma, bs2_vovo, bs_2, bs_vo, d_oo, d_ov, d_vv, s2, s2_2, t_vovo, v_vovo)
 !!
 !! Generated function
 !!
@@ -8,12 +8,12 @@
 !
       real(dp), intent(inout) :: sigma
 !
-      real(dp), intent(in) :: bγ2
+      real(dp), intent(in) :: bs_2
       real(dp), dimension(wf%n_o,wf%n_o), intent(in) :: d_oo
       real(dp), dimension(wf%n_o,wf%n_v), intent(in) :: d_ov
       real(dp), dimension(wf%n_v,wf%n_o), intent(in) :: bs_vo
       real(dp), dimension(wf%n_v,wf%n_v), intent(in) :: d_vv
-      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(in) :: bs2_vovo, s₁_vovo, s₂_vovo, t_vovo, v₁_vovo
+      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(in) :: bs2_vovo, s2, s2_2, t_vovo, v_vovo
 !
       real(dp), dimension(:,:), allocatable :: X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15
 !
@@ -21,7 +21,7 @@
 !
       call mem%alloc(X1, wf%n_v, wf%n_o)
       call sort_to_21(d_ov, X1, wf%n_o, wf%n_v)
-      sigma = sigma + four*bγ2 * ddot(wf%n_v*wf%n_o, X1, 1, wf%s1_2, 1)
+      sigma = sigma + four*bs_2 * ddot(wf%n_v*wf%n_o, X1, 1, wf%s1_2, 1)
       call mem%dealloc(X1)
       call mem%alloc(X2, wf%n_v, wf%n_o)
 !
@@ -65,7 +65,7 @@
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          one, &
-         v₁_vovo, &
+         v_vovo, &
          wf%n_v*wf%n_o, &
          X4, 1, &
          zero, &
@@ -83,7 +83,7 @@
          two, &
          bs2_vovo, &
          wf%n_v, &
-         s₂_vovo, &
+         s2_2, &
          wf%n_v, &
          zero, &
          X6, &
@@ -98,7 +98,7 @@
          wf%n_o, &
          wf%n_v**2*wf%n_o, &
          -two, &
-         s₂_vovo, &
+         s2_2, &
          wf%n_v**2*wf%n_o, &
          bs2_vovo, &
          wf%n_v**2*wf%n_o, &
@@ -117,29 +117,29 @@
          -two, &
          bs2_vovo, &
          wf%n_v, &
-         s₁_vovo, &
+         s2, &
          wf%n_v, &
          zero, &
          X8, &
          wf%n_v)
 !
-      call mem%alloc(X9, wf%n_v, wf%n_o)
+      call mem%alloc(X9, wf%n_o, wf%n_v)
 !
-      call dgemm('N', 'T', &
-         wf%n_v, &
+      call dgemm('T', 'N', &
          wf%n_o, &
+         wf%n_v, &
          wf%n_v, &
          one, &
+         wf%s1, &
+         wf%n_v, &
          X8, &
          wf%n_v, &
-         d_ov, &
-         wf%n_o, &
          zero, &
          X9, &
-         wf%n_v)
+         wf%n_o)
 !
       call mem%dealloc(X8)
-      sigma = sigma + ddot(wf%n_v*wf%n_o, X9, 1, wf%s1, 1)
+      sigma = sigma + ddot(wf%n_v*wf%n_o, X9, 1, d_ov, 1)
       call mem%dealloc(X9)
       call mem%alloc(X10, wf%n_o, wf%n_o)
 !
@@ -148,7 +148,7 @@
          wf%n_o, &
          wf%n_v**2*wf%n_o, &
          -two, &
-         s₁_vovo, &
+         s2, &
          wf%n_v**2*wf%n_o, &
          bs2_vovo, &
          wf%n_v**2*wf%n_o, &

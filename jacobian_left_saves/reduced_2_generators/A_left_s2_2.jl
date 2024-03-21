@@ -2,7 +2,7 @@ let
     func = FortranFunction(("sigma_vovo", ["v", "o", "v", "o"]))
     outperms = [[1, 2, 3, 4], [3, 4, 1, 2]]
     L_ovov = ("L_ovov", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
-    bγ2 = ("bγ2", true)
+    bγ2 = ("bs_2", true)
     bs_vo = ("bs_vo", true)
     d_ov = ("d_ov", true)
     bs2_vovo = ("bs2_vovo", true, [[1, 2, 3, 4], [3, 4, 1, 2]])

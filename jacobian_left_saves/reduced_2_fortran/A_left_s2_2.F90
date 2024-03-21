@@ -1,4 +1,4 @@
-   subroutine jacobian_transpose_s2_2_qed_ccsd_2(wf, sigma_vovo, F_oo, F_vv, L_ovov, L_ovvo, bs2_vovo, bs_vo, bs_vovo, bγ2, d_oo, d_ov, d_vv, g_oooo, g_oovv, g_ovov, g_ovvo, g_vvvv, t_vovo)
+   subroutine jacobian_transpose_s2_2_qed_ccsd_2(wf, sigma_vovo, F_oo, F_vv, L_ovov, L_ovvo, bs2_vovo, bs_2, bs_vo, bs_vovo, d_oo, d_ov, d_vv, g_oooo, g_oovv, g_ovov, g_ovvo, g_vvvv, t_vovo)
 !!
 !! Generated function
 !!
@@ -8,7 +8,7 @@
 !
       real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(inout) :: sigma_vovo
 !
-      real(dp), intent(in) :: bγ2
+      real(dp), intent(in) :: bs_2
       real(dp), dimension(wf%n_o,wf%n_o), intent(in) :: F_oo, d_oo
       real(dp), dimension(wf%n_o,wf%n_v), intent(in) :: d_ov
       real(dp), dimension(wf%n_v,wf%n_o), intent(in) :: bs_vo
@@ -28,7 +28,7 @@
 !
       real(dp), external :: ddot
 !
-      call add_2143_to_1234(two*bγ2, L_ovov, sigma_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call add_2143_to_1234(two*bs_2, L_ovov, sigma_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
       call mem%alloc(X1, wf%n_v, wf%n_o)
       call sort_to_21(d_ov, X1, wf%n_o, wf%n_v)
 !
@@ -462,23 +462,24 @@
          wf%n_v*wf%n_o)
 !
       call mem%dealloc(X28)
-      call mem%alloc(X29, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X29, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+      call sort_to_1423(g_ovov, X29, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X30, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
 !
-      call dgemm('N', 'N', &
+      call dgemm('N', 'T', &
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          two, &
-         bs2_vovo, &
+         X29, &
          wf%n_v*wf%n_o, &
          t_vovo, &
          wf%n_v*wf%n_o, &
          zero, &
-         X29, &
+         X30, &
          wf%n_v*wf%n_o)
 !
-      call mem%alloc(X30, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
-      call sort_to_1423(g_ovov, X30, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%dealloc(X29)
       call mem%alloc(X31, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
 !
       call dgemm('N', 'T', &
@@ -486,7 +487,7 @@
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          one, &
-         X29, &
+         bs2_vovo, &
          wf%n_v*wf%n_o, &
          X30, &
          wf%n_v*wf%n_o, &
@@ -494,7 +495,6 @@
          X31, &
          wf%n_v*wf%n_o)
 !
-      call mem%dealloc(X29)
       call mem%dealloc(X30)
       call add_1423_to_1234(one, X31, sigma_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
       call mem%dealloc(X31)
@@ -540,13 +540,13 @@
       call mem%dealloc(X34)
       call add_1324_to_1234(one, X36, sigma_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
       call mem%dealloc(X36)
-      call mem%alloc(X37, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
-      call sort_to_1432(g_ovov, X37, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
-      call mem%alloc(X38, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
-      call sort_to_1423(t_vovo, X38, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
-      call mem%alloc(X39, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+      call mem%alloc(X37, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(bs2_vovo, X37, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X38, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call sort_to_1432(t_vovo, X38, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X39, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
 !
-      call dgemm('N', 'T', &
+      call dgemm('N', 'N', &
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
@@ -561,8 +561,8 @@
 !
       call mem%dealloc(X37)
       call mem%dealloc(X38)
-      call mem%alloc(X40, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
-      call sort_to_1432(bs2_vovo, X40, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X40, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+      call sort_to_1423(g_ovov, X40, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
       call mem%alloc(X41, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
 !
       call dgemm('N', 'T', &
@@ -570,16 +570,16 @@
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          one, &
-         X40, &
-         wf%n_v*wf%n_o, &
          X39, &
+         wf%n_v*wf%n_o, &
+         X40, &
          wf%n_v*wf%n_o, &
          zero, &
          X41, &
          wf%n_v*wf%n_o)
 !
-      call mem%dealloc(X40)
       call mem%dealloc(X39)
+      call mem%dealloc(X40)
       call add_1423_to_1234(one, X41, sigma_vovo, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
       call mem%dealloc(X41)
       call mem%alloc(X42, wf%n_v, wf%n_v, wf%n_o, wf%n_o)
@@ -690,23 +690,23 @@
          wf%n_v)
 !
       call mem%dealloc(X50)
-      call mem%alloc(X51, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
+      call mem%alloc(X51, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
+      call sort_to_1243(g_ovov, X51, wf%n_o, wf%n_v, wf%n_o, wf%n_v)
+      call mem%alloc(X52, wf%n_o, wf%n_v, wf%n_v, wf%n_o)
 !
-      call dgemm('N', 'N', &
+      call dgemm('N', 'T', &
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          -two, &
-         bs2_vovo, &
+         X51, &
          wf%n_v*wf%n_o, &
          wf%u_aibj, &
          wf%n_v*wf%n_o, &
          zero, &
-         X51, &
+         X52, &
          wf%n_v*wf%n_o)
 !
-      call mem%alloc(X52, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
-      call sort_to_1243(X51, X52, wf%n_v, wf%n_o, wf%n_v, wf%n_o)
       call mem%dealloc(X51)
       call mem%alloc(X53, wf%n_v, wf%n_o, wf%n_o, wf%n_v)
 !
@@ -715,9 +715,9 @@
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          one, &
-         X52, &
+         bs2_vovo, &
          wf%n_v*wf%n_o, &
-         g_ovov, &
+         X52, &
          wf%n_v*wf%n_o, &
          zero, &
          X53, &

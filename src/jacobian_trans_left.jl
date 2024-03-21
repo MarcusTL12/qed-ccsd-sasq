@@ -264,11 +264,17 @@ function generate_code_A_left(dir, name, eT_name, eT_symbol, indices, outperms=n
         println(io, print_eT_function_generator(eT_name, ex, eT_symbol, indices, A_trans, "qed_ccsd_2",
             Dict([
                 "γ₁" => "wf%s0",
-                "γ₂" => "wf%s0_1",
+                "γ₂" => "wf%s0_2",
+                "bγ" => "bs",
+                "bγ2" => "bs_2",
                 "t_vo" => "wf%t1",
                 "s₁_vo" => "wf%s1",
                 "s₂_vo" => "wf%s1_2",
+                "s₁_vovo" => "s2",
+                "s₂_vovo" => "s2_2",
                 "u_vovo" => "wf%u_aibj",
+                "v₁_vovo" => "v_vovo",
+                "v₂_vovo" => "v_2_vovo",
                 "ω" => "wf%qed%frequencies(wf%mode)"
             ]), ["γ₁", "γ₂", "t_vo", "s₁_vo", "s₂_vo", "u_vovo", "ω"], outperms))
     end
