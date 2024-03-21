@@ -3,7 +3,8 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     t1 = simplify_heavy(∑(jacobian_element(deex_braop(5, 6), right_op, H) * real_tensor("bt", 5, 6), 5:6))
     @time begin
         t1 = look_for_tensor_replacements_smart(t1, make_exchange_transformer("t", "u"))
-        t1 = look_for_tensor_replacements_smart(t1, make_exchange_transformer("s", "v"))
+        t1 = look_for_tensor_replacements_smart(t1, make_exchange_transformer("s₁", "v₁"))
+        t1 = look_for_tensor_replacements_smart(t1, make_exchange_transformer("s₂", "v₂"))
         t1 = look_for_tensor_replacements_smart(t1, make_exchange_transformer("g", "L"))
     end
 
@@ -20,7 +21,8 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     t2 = simplify_heavy(1 // 2 * ∑(jacobian_element(deex_braop(5, 6, 7, 8), right_op, H) * psym_tensor("bt", 5:8...), 5:8))
     @time begin
         t2 = look_for_tensor_replacements_smart(t2, make_exchange_transformer("t", "u"))
-        t2 = look_for_tensor_replacements_smart(t2, make_exchange_transformer("s", "v"))
+        t2 = look_for_tensor_replacements_smart(t2, make_exchange_transformer("s₁", "v₁"))
+        t2 = look_for_tensor_replacements_smart(t2, make_exchange_transformer("s₂", "v₂"))
         t2 = look_for_tensor_replacements_smart(t2, make_exchange_transformer("g", "L"))
         t2 = look_for_tensor_replacements_smart(t2, make_exchange_transformer("bt", "bu"))
     end
@@ -38,7 +40,8 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     γ = simplify_heavy(jacobian_element(b, right_op, H) * real_tensor("bγ"))
     @time begin
         γ = look_for_tensor_replacements_smart(γ, make_exchange_transformer("t", "u"))
-        γ = look_for_tensor_replacements_smart(γ, make_exchange_transformer("s", "v"))
+        γ = look_for_tensor_replacements_smart(γ, make_exchange_transformer("s₁", "v₁"))
+        γ = look_for_tensor_replacements_smart(γ, make_exchange_transformer("s₂", "v₂"))
         γ = look_for_tensor_replacements_smart(γ, make_exchange_transformer("g", "L"))
     end
 
@@ -55,7 +58,8 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     s1 = simplify_heavy(∑(jacobian_element(deex_braop(5, 6) * b, right_op, H) * real_tensor("bs", 5, 6), 5:6))
     @time begin
         s1 = look_for_tensor_replacements_smart(s1, make_exchange_transformer("t", "u"))
-        s1 = look_for_tensor_replacements_smart(s1, make_exchange_transformer("s", "v"))
+        s1 = look_for_tensor_replacements_smart(s1, make_exchange_transformer("s₁", "v₁"))
+        s1 = look_for_tensor_replacements_smart(s1, make_exchange_transformer("s₂", "v₂"))
         s1 = look_for_tensor_replacements_smart(s1, make_exchange_transformer("g", "L"))
     end
 
@@ -72,7 +76,8 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     s2 = simplify_heavy(1 // 2 * ∑(jacobian_element(deex_braop(5, 6, 7, 8) * b, right_op, H) * psym_tensor("bs", 5:8...), 5:8))
     @time begin
         s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("t", "u"))
-        s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("s", "v"))
+        s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("s₁", "v₁"))
+        s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("s₂", "v₂"))
         s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("g", "L"))
         s2 = look_for_tensor_replacements_smart(s2, make_exchange_transformer("bs", "bv"))
     end
@@ -90,7 +95,8 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     # γ2 = simplify_heavy(jacobian_element(b^2, right_op, H) * real_tensor("bγ2"))
     # @time begin
     #     γ2 = look_for_tensor_replacements_smart(γ2, make_exchange_transformer("t", "u"))
-    #     γ2 = look_for_tensor_replacements_smart(γ2, make_exchange_transformer("s", "v"))
+    #     γ2 = look_for_tensor_replacements_smart(γ2, make_exchange_transformer("s₁", "v₁"))
+    #     γ2 = look_for_tensor_replacements_smart(γ2, make_exchange_transformer("s₂", "v₂"))
     #     γ2 = look_for_tensor_replacements_smart(γ2, make_exchange_transformer("g", "L"))
     # end
 
@@ -107,7 +113,8 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     # s1_2 = simplify_heavy(∑(jacobian_element(deex_braop(5, 6) * b^2, right_op, H) * real_tensor("bs2", 5, 6), 5:6))
     # @time begin
     #     s1_2 = look_for_tensor_replacements_smart(s1_2, make_exchange_transformer("t", "u"))
-    #     s1_2 = look_for_tensor_replacements_smart(s1_2, make_exchange_transformer("s", "v"))
+    #     s1_2 = look_for_tensor_replacements_smart(s1_2, make_exchange_transformer("s₁", "v₁"))
+    #     s1_2 = look_for_tensor_replacements_smart(s1_2, make_exchange_transformer("s₂", "v₂"))
     #     s1_2 = look_for_tensor_replacements_smart(s1_2, make_exchange_transformer("g", "L"))
     # end
 
@@ -124,7 +131,8 @@ function jacobian_left_transformation(right_op, H, symmetry, symbol, name, H_nam
     # s2_2 = simplify_heavy(1 // 2 * ∑(jacobian_element(deex_braop(5, 6, 7, 8) * b^2, right_op, H) * psym_tensor("bs2", 5:8...), 5:8))
     # @time begin
     #     s2_2 = look_for_tensor_replacements_smart(s2_2, make_exchange_transformer("t", "u"))
-    #     s2_2 = look_for_tensor_replacements_smart(s2_2, make_exchange_transformer("s", "v"))
+    #     s2_2 = look_for_tensor_replacements_smart(s2_2, make_exchange_transformer("s₁", "v₁"))
+    #     s2_2 = look_for_tensor_replacements_smart(s2_2, make_exchange_transformer("s₂", "v₂"))
     #     s2_2 = look_for_tensor_replacements_smart(s2_2, make_exchange_transformer("g", "L"))
     #     s2_2 = look_for_tensor_replacements_smart(s2_2, make_exchange_transformer("bs2", "bv2"))
     # end
@@ -227,11 +235,16 @@ function A_all_left(H, H_name)
 end
 
 function make_A_left_differences()
-    for name in readdir("jacobian_left_saves/full_1_serial")
-        ex1 = deserialize("jacobian_left_saves/full_1_serial/$name")
-        ex2 = deserialize("jacobian_left_saves/full_2_serial/$name")
-        Δ = ex2 - ex1
-        serialize("jacobian_left_saves/reduced_2_serial/$name", Δ)
+    for name in readdir("jacobian_left_saves/full_2_serial")
+        if isfile("jacobian_left_saves/full_1_serial/$name")
+            ex1 = deserialize("jacobian_left_saves/full_1_serial/$name")
+            ex2 = deserialize("jacobian_left_saves/full_2_serial/$name")
+            Δ = ex2 - ex1
+            serialize("jacobian_left_saves/reduced_2_serial/$name", Δ)
+        else
+            ex2 = deserialize("jacobian_left_saves/full_2_serial/$name")
+            serialize("jacobian_left_saves/reduced_2_serial/$name", ex2)
+        end
     end
 end
 
