@@ -140,22 +140,28 @@ function generate_code_omega(dir, omega_name, eT_name, eT_symbol, indices, outpe
         println(io, print_eT_function_generator(eT_name, ex, eT_symbol, indices, A_trans, "qed_ccsd_2",
             Dict([
                 "γ₁" => "wf%s0",
-                "γ₂" => "wf%s0_1",
+                "γ₂" => "wf%s0_2",
+                "bγ" => "bs",
+                "bγ2" => "bs_2",
                 "t_vo" => "wf%t1",
                 "s₁_vo" => "wf%s1",
                 "s₂_vo" => "wf%s1_2",
+                "s₁_vovo" => "s2",
+                "s₂_vovo" => "s2_2",
                 "u_vovo" => "wf%u_aibj",
+                "v₁_vovo" => "v_vovo",
+                "v₂_vovo" => "v_2_vovo",
                 "ω" => "wf%qed%frequencies(wf%mode)"
             ]), ["γ₁", "γ₂", "t_vo", "s₁_vo", "s₂_vo", "u_vovo", "ω"], outperms))
     end
 end
 
 function generate_all_code_omega()
-    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω1", "omega_1", "omega", [])
-    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω1_ai", "omega_1_ai", "omega_vo", [1, 2])
-    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω1_aibj", "omega_1_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
+    generate_code_omega("omega_saves/reduced_qed_ccsd_2_omega_serial/", "Ω1", "omega_1", "omega", [])
+    generate_code_omega("omega_saves/reduced_qed_ccsd_2_omega_serial/", "Ω1_ai", "omega_1_ai", "omega_vo", [1, 2])
+    generate_code_omega("omega_saves/reduced_qed_ccsd_2_omega_serial/", "Ω1_aibj", "omega_1_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
 
-    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω2", "omega_2", "omega", [])
-    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω2_ai", "omega_2_ai", "omega_vo", [1, 2])
-    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω2_aibj", "omega_2_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
+    generate_code_omega("omega_saves/reduced_qed_ccsd_2_omega_serial/", "Ω2", "omega_2", "omega", [])
+    generate_code_omega("omega_saves/reduced_qed_ccsd_2_omega_serial/", "Ω2_ai", "omega_2_ai", "omega_vo", [1, 2])
+    generate_code_omega("omega_saves/reduced_qed_ccsd_2_omega_serial/", "Ω2_aibj", "omega_2_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
 end

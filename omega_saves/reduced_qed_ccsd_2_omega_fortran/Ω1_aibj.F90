@@ -1,4 +1,4 @@
-   subroutine omega_1_aibj_qed_ccsd_2(wf, omega_vovo, d_oo, d_ov, d_vo, d_vv, s₂_vovo, t_vovo)
+   subroutine omega_1_aibj_qed_ccsd_2(wf, omega_vovo, d_oo, d_ov, d_vo, d_vv, s2_2, t_vovo)
 !!
 !! Generated function
 !!
@@ -12,7 +12,7 @@
       real(dp), dimension(wf%n_o,wf%n_v), intent(in) :: d_ov
       real(dp), dimension(wf%n_v,wf%n_o), intent(in) :: d_vo
       real(dp), dimension(wf%n_v,wf%n_v), intent(in) :: d_vv
-      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(in) :: s₂_vovo, t_vovo
+      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(in) :: s2_2, t_vovo
 !
       real(dp) :: X1
       real(dp), dimension(:,:), allocatable :: X2, X3, X4, X5
@@ -36,7 +36,7 @@
          two, &
          d_vv, &
          wf%n_v, &
-         s₂_vovo, &
+         s2_2, &
          wf%n_v, &
          one, &
          omega_vovo, &
@@ -48,7 +48,7 @@
          wf%n_o, &
          wf%n_o, &
          -two, &
-         s₂_vovo, &
+         s2_2, &
          wf%n_v**2*wf%n_o, &
          d_oo, &
          wf%n_o, &
@@ -62,13 +62,13 @@
          X1 = X1 + d_oo(i1,i1)
       end do
 !
-      call daxpy(wf%n_v**2*wf%n_o**2, two*X1, s₂_vovo, 1, omega_vovo, 1)
+      call daxpy(wf%n_v**2*wf%n_o**2, two*X1, s2_2, 1, omega_vovo, 1)
 !
       call dgemm('N', 'N', &
          wf%n_v, &
          wf%n_v*wf%n_o**2, &
          wf%n_v, &
-         two*wf%s0_1, &
+         two*wf%s0_2, &
          d_vv, &
          wf%n_v, &
          t_vovo, &
@@ -82,7 +82,7 @@
          wf%n_v**2*wf%n_o, &
          wf%n_o, &
          wf%n_o, &
-         -two*wf%s0_1, &
+         -two*wf%s0_2, &
          t_vovo, &
          wf%n_v**2*wf%n_o, &
          d_oo, &

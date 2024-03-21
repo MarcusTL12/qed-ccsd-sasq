@@ -1,4 +1,4 @@
-   subroutine omega_1_ai_qed_ccsd_2(wf, omega_vo, d_oo, d_ov, d_vo, d_vv, v₂_vovo)
+   subroutine omega_1_ai_qed_ccsd_2(wf, omega_vo, d_oo, d_ov, d_vo, d_vv, v_2_vovo)
 !!
 !! Generated function
 !!
@@ -12,14 +12,14 @@
       real(dp), dimension(wf%n_o,wf%n_v), intent(in) :: d_ov
       real(dp), dimension(wf%n_v,wf%n_o), intent(in) :: d_vo
       real(dp), dimension(wf%n_v,wf%n_v), intent(in) :: d_vv
-      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(in) :: v₂_vovo
+      real(dp), dimension(wf%n_v,wf%n_o,wf%n_v,wf%n_o), intent(in) :: v_2_vovo
 !
       real(dp) :: X1
       real(dp), dimension(:,:), allocatable :: X2, X3
 !
       integer :: i1
 !
-      call daxpy(wf%n_v*wf%n_o, two*wf%s0_1, d_vo, 1, omega_vo, 1)
+      call daxpy(wf%n_v*wf%n_o, two*wf%s0_2, d_vo, 1, omega_vo, 1)
 !
       call dgemm('N', 'N', &
          wf%n_v, &
@@ -62,7 +62,7 @@
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
          two, &
-         v₂_vovo, &
+         v_2_vovo, &
          wf%n_v*wf%n_o, &
          X2, 1, &
          one, &
@@ -75,7 +75,7 @@
       call dgemv('N', &
          wf%n_v*wf%n_o, &
          wf%n_v*wf%n_o, &
-         two*wf%s0_1, &
+         two*wf%s0_2, &
          wf%u_aibj, &
          wf%n_v*wf%n_o, &
          X3, 1, &

@@ -1,6 +1,6 @@
 let
     func = FortranFunction(("omega", String[]))
-    γ₂ = ("wf%s0_1", false)
+    γ₂ = ("wf%s0_2", false)
     ω = ("wf%qed%frequencies(wf%mode)", false)
     F_ov = ("F_ov", true)
     s₂_vo = ("wf%s1_2", false)
@@ -8,7 +8,7 @@ let
     s₁_vo = ("wf%s1", false)
     γ₁ = ("wf%s0", false)
     g_ovov = ("g_ovov", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
-    v₂_vovo = ("v₂_vovo", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
+    v₂_vovo = ("v_2_vovo", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
     L_ovov = ("L_ovov", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
     update_code!(func, ein",->", 4//1, [γ₂, ω])
     update_code!(func, ein"ia,ai->", 4//1, [F_ov, s₂_vo])

@@ -24,7 +24,7 @@
          X1 = X1 + d_oo(i1,i1)
       end do
 !
-      omega = omega + four*X1 * wf%s0_1
+      omega = omega + four*X1 * wf%s0_2
       call mem%alloc(X2, wf%n_v, wf%n_o)
       call sort_to_21(d_ov, X2, wf%n_o, wf%n_v)
       omega = omega + four * ddot(wf%n_v*wf%n_o, X2, 1, wf%s1_2, 1)
