@@ -35,8 +35,9 @@ S2_2 = 1 // 2 * ∑(
 Γ1 = real_tensor("γ₁") * b'
 Γ2 = real_tensor("γ₂") * b'^2
 
-T = T2 + S1_1 + S2_1 + Γ1 + S1_2 + S2_2 + Γ2
-T_qed_ccsd_1 = T2 + S1_1 + S2_1 + Γ1
+# T = T2 + S1_1 + S2_1 + Γ1 + S1_2 + S2_2 + Γ2
+T = T2 + S1_1 + S2_1 + Γ1
+# T_qed_ccsd_1 = T2 + S1_1 + S2_1 + Γ1
 
 ex_ketop(a, i) = E(a, i) * occupied(i) * virtual(a)
 ex_ketop(a, i, b, j) = E(a, i) * E(b, j) * occupied(i, j) * virtual(a, b)

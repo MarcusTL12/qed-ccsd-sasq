@@ -1,4 +1,9 @@
 
+function block_noind(op)
+    println("D =\n")
+    op |> hf_expectation_value |> simplify_heavy
+end
+
 function block_oo(op)
     D = (op * occupied(1, 2)
          |> hf_expectation_value |> simplify_heavy)

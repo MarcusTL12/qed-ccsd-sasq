@@ -124,7 +124,7 @@ function filter_zeros(dir)
     end
 end
 
-function generate_code(dir, omega_name, eT_name, eT_symbol, indices, outperms=nothing)
+function generate_code_omega(dir, omega_name, eT_name, eT_symbol, indices, outperms=nothing)
     Hs = ["HFe", "H_ω", "H_Eb"]
 
     ex = SASQ.Expression(0)
@@ -150,12 +150,12 @@ function generate_code(dir, omega_name, eT_name, eT_symbol, indices, outperms=no
     end
 end
 
-function generate_all_code()
-    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω1", "omega_1", "omega", [])
-    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω1_ai", "omega_1_ai", "omega_vo", [1, 2])
-    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω1_aibj", "omega_1_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
+function generate_all_code_omega()
+    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω1", "omega_1", "omega", [])
+    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω1_ai", "omega_1_ai", "omega_vo", [1, 2])
+    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω1_aibj", "omega_1_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
 
-    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω2", "omega_2", "omega", [])
-    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω2_ai", "omega_2_ai", "omega_vo", [1, 2])
-    generate_code("reduced_qed_ccsd_2_omega_serial/", "Ω2_aibj", "omega_2_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
+    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω2", "omega_2", "omega", [])
+    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω2_ai", "omega_2_ai", "omega_vo", [1, 2])
+    generate_code_omega("reduced_qed_ccsd_2_omega_serial/", "Ω2_aibj", "omega_2_aibj", "omega_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
 end

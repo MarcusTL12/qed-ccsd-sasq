@@ -234,3 +234,42 @@ function make_A_left_differences()
         serialize("jacobian_left_saves/reduced_2_serial/$name", Δ)
     end
 end
+
+function generate_code_A_left(dir, name, eT_name, eT_symbol, indices, outperms=nothing)
+    Hs = ["electronic", "photon", "bilinear"]
+
+    ex = SASQ.Expression(0)
+
+    for H in Hs
+        filename = "$dir/$(name)_$H"
+        if isfile(filename)
+            ex += deserialize(filename)
+        end
+    end
+
+    open("$(name).jl", "w") do io
+        println(io, print_eT_function_generator(eT_name, ex, eT_symbol, indices, A_trans, "qed_ccsd_2",
+            Dict([
+                "γ₁" => "wf%s0",
+                "γ₂" => "wf%s0_1",
+                "t_vo" => "wf%t1",
+                "s₁_vo" => "wf%s1",
+                "s₂_vo" => "wf%s1_2",
+                "u_vovo" => "wf%u_aibj",
+                "ω" => "wf%qed%frequencies(wf%mode)"
+            ]), ["γ₁", "γ₂", "t_vo", "s₁_vo", "s₂_vo", "u_vovo", "ω"], outperms))
+    end
+end
+
+function generate_all_code_A_left()
+    generate_code_A_left("jacobian_left_saves/reduced_2_serial/", "A_left_t1", "jacobian_transpose_t1", "sigma_vo", [1, 2])
+    generate_code_A_left("jacobian_left_saves/reduced_2_serial/", "A_left_t2", "jacobian_transpose_t2", "sigma_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
+
+    generate_code_A_left("jacobian_left_saves/reduced_2_serial/", "A_left_s0", "jacobian_transpose_s0", "sigma", [])
+    generate_code_A_left("jacobian_left_saves/reduced_2_serial/", "A_left_s1", "jacobian_transpose_s1", "sigma_vo", [1, 2])
+    generate_code_A_left("jacobian_left_saves/reduced_2_serial/", "A_left_s2", "jacobian_transpose_s2", "sigma_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
+
+    generate_code_A_left("jacobian_left_saves/reduced_2_serial/", "A_left_s0_2", "jacobian_transpose_s0_2", "sigma", [])
+    generate_code_A_left("jacobian_left_saves/reduced_2_serial/", "A_left_s1_2", "jacobian_transpose_s1_2", "sigma_vo", [1, 2])
+    generate_code_A_left("jacobian_left_saves/reduced_2_serial/", "A_left_s2_2", "jacobian_transpose_s2_2", "sigma_vovo", [1, 2, 3, 4], [[1, 2, 3, 4], [3, 4, 1, 2]])
+end
