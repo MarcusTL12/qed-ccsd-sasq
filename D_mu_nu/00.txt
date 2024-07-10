@@ -1,0 +1,32 @@
+julia> @time mu_nu(E(1, 2), 0, 0)(block_oo)
+D_ij =
+
+  1.959746 seconds (12.91 M allocations: 1.115 GiB, 6.80% gc time, 143.16% compilation time: 21% of which was recompilation)
+- ∑_a(Lt_aj Rt_ai)
+- ∑_abk(Lt_ajbk Rt_aibk)
++ 2 ∑_ak(δ_ij Lt_ak Rt_ak)
++ ∑_akbl(δ_ij Lt_akbl Rt_akbl)
+
+julia> @time mu_nu(E(1, 2), 0, 0)(block_ov)
+D_ia =
+
+  6.295200 seconds (197.12 M allocations: 17.561 GiB, 28.14% gc time, 0.52% compilation time)
+2 ∑_bj(Lt_bj Rt_aibj)
+- ∑_bj(Lt_bj Rt_ajbi)
+- ∑_bjck(Lt_bjck Rt_aj t_bick)
+- ∑_bjck(Lt_bjck Rt_bi t_ajck)
++ 2 ∑_bjck(Lt_bjck Rt_bj t_aick)
+- ∑_bjck(Lt_bjck Rt_bj t_akci)
+
+julia> @time mu_nu(E(1, 2), 0, 0)(block_vo)
+D_ai =
+
+  0.178917 seconds (1.80 M allocations: 157.663 MiB, 9.65% gc time, 13.71% compilation time)
+∑_bj(Lt_aibj Rt_bj)
+
+julia> @time mu_nu(E(1, 2), 0, 0)(block_vv)
+D_ab =
+
+  0.529517 seconds (11.86 M allocations: 1.046 GiB, 32.50% gc time, 5.82% compilation time)
+∑_i(Lt_ai Rt_bi)
++ ∑_icj(Lt_aicj Rt_bicj)

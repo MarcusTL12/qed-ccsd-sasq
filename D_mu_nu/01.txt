@@ -1,0 +1,23 @@
+julia> @time mu_nu(E(1, 2), 0, 1)(block_oo)
+D_ij =
+
+  0.502754 seconds (12.34 M allocations: 1.083 GiB, 28.13% gc time)
+0
+
+julia> @time mu_nu(E(1, 2), 0, 1)(block_ov)
+D_ia =
+
+  5.564151 seconds (210.60 M allocations: 18.732 GiB, 29.60% gc time)
+0
+
+julia> @time mu_nu(E(1, 2), 0, 1)(block_vo)
+D_ai =
+
+  0.118229 seconds (1.81 M allocations: 159.560 MiB, 11.25% gc time)
+0
+
+julia> @time mu_nu(E(1, 2), 0, 1)(block_vv)
+D_ab =
+
+  0.647268 seconds (12.34 M allocations: 1.083 GiB, 40.28% gc time)
+0
