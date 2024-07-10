@@ -5,9 +5,10 @@ D_ij =
 - ∑_a(Ls_aj Rs_ai)
 - ∑_abk(Ls_ajbk Rs_aibk)
 - ∑_abk(Ls_ajbk Rs t_aibk)
+
 + 2 δ_ij Ls1 Rs
-+ 2 ∑_ak(δ_ij Ls_ak Rs_ak)
-+ ∑_akbl(δ_ij Ls_akbl Rs_akbl)
++ 2 δ_ij ∑_ak(Ls_ak Rs_ak)
++   δ_ij ∑_akbl(Ls_akbl Rs_akbl)
 
 julia> @time mu_nu(E(1, 2), 1, 1)(block_ov)
 D_ia =
@@ -16,21 +17,22 @@ D_ia =
 2 Ls1 Rs_ai
 + ∑_bj(Ls_bj Rv_aibj)
 + ∑_bj(Ls_bj Rs u_aibj)
+
++ ∑_bjck(Ls_bjck Rs_bj u_aick)
 - ∑_bjck(Ls_bjck Rs_aj t_bick)
 - ∑_bjck(Ls_bjck Rs_bi t_ajck)
-+ ∑_bjck(Ls_bjck Rs_bj u_aick)
 
 julia> @time mu_nu(E(1, 2), 1, 1)(block_vo)
 D_ai =
 
   0.232146 seconds (2.82 M allocations: 246.157 MiB, 23.01% gc time)
-Ls_ai Rs
+  Ls_ai Rs
 + ∑_bj(Ls_aibj Rs_bj)
 
 julia> @time mu_nu(E(1, 2), 1, 1)(block_vv)
 D_ab =
 
   0.997072 seconds (31.09 M allocations: 2.726 GiB, 35.30% gc time)
-∑_i(Ls_ai Rs_bi)
+  ∑_i(Ls_ai Rs_bi)
 + ∑_icj(Ls_aicj Rs_bicj)
 + ∑_icj(Ls_aicj Rs t_bicj)

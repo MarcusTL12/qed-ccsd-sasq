@@ -11,10 +11,10 @@ julia> @time mu_nu(E(1, 2), 0, 0)(block_ov)
 D_ia =
 
   5.483093 seconds (197.14 M allocations: 17.563 GiB, 31.77% gc time, 1.21% compilation time)
-∑_bj(Lt_bj Ru_aibj)
+  ∑_bj(Lt_bj Ru_aibj)
++ ∑_bjck(Lt_bjck Rt_bj u_aick)
 - ∑_bjck(Lt_bjck Rt_aj t_bick)
 - ∑_bjck(Lt_bjck Rt_bi t_ajck)
-+ ∑_bjck(Lt_bjck Rt_bj u_aick)
 
 julia> @time mu_nu(E(1, 2), 0, 0)(block_vo)
 D_ai =
@@ -26,5 +26,5 @@ julia> @time mu_nu(E(1, 2), 0, 0)(block_vv)
 D_ab =
 
   0.425371 seconds (11.86 M allocations: 1.046 GiB, 29.55% gc time, 6.02% compilation time)
-∑_i(Lt_ai Rt_bi)
+  ∑_i(Lt_ai Rt_bi)
 + ∑_icj(Lt_aicj Rt_bicj)

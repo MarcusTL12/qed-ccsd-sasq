@@ -8,15 +8,17 @@ julia> @time mu_nu(E(1, 2), 1, 0)(block_ov)
 D_ia =
 
  12.913926 seconds (415.88 M allocations: 36.958 GiB, 32.50% gc time)
-- ∑_bj(Ls_bj Rt_aj s_bi)
-- ∑_bj(Ls_bj Rt_bi s_aj)
 + 2 ∑_bj(Ls_bj Rt_bj s_ai)
+-   ∑_bj(Ls_bj Rt_aj s_bi)
+-   ∑_bj(Ls_bj Rt_bi s_aj)
+
++ ∑_bjck(Ls_bjck Rt_bj v_aick)
 - ∑_bjck(Ls_bjck Rt_aj s_bick)
 - ∑_bjck(Ls_bjck Rt_bi s_ajck)
+
++ ∑_bjck(Ls_bjck Rt_bjck s_ai)
 - ∑_bjck(Ls_bjck Rt_ajck s_bi)
 - ∑_bjck(Ls_bjck Rt_bick s_aj)
-+ ∑_bjck(Ls_bjck Rt_bjck s_ai)
-+ ∑_bjck(Ls_bjck Rt_bj v_aick)
 
 julia> @time mu_nu(E(1, 2), 1, 0)(block_vo)
 D_ai =
