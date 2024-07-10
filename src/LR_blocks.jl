@@ -169,7 +169,14 @@ end
 function mu_nu(op, mu_ph, nu_ph)
     op = L_mu[mu_ph+1] * simplify(bch(op, T, 3)) * R_mu[nu_ph+1]
     function f(block)
-        block(op)
+        x = block(op)
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("t", "u"))
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("s", "v"))
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("Lt", "Lu"))
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("Ls", "Lv"))
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("Rt", "Ru"))
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("Rs", "Rv"))
+        x
     end
 end
 

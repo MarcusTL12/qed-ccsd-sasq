@@ -1,7 +1,7 @@
 julia> @time mu_nu(E(1, 2), 1, 1)(block_oo)
 D_ij =
 
-  1.404881 seconds (31.22 M allocations: 2.736 GiB, 24.69% gc time, 11.62% compilation time)
+  1.184208 seconds (31.12 M allocations: 2.728 GiB, 35.20% gc time, 5.91% compilation time)
 - ∑_a(Ls_aj Rs_ai)
 - ∑_abk(Ls_ajbk Rs_aibk)
 - ∑_abk(Ls_ajbk Rs t_aibk)
@@ -12,28 +12,25 @@ D_ij =
 julia> @time mu_nu(E(1, 2), 1, 1)(block_ov)
 D_ia =
 
- 17.792455 seconds (655.20 M allocations: 58.183 GiB, 30.07% gc time, 0.12% compilation time)
+ 17.211032 seconds (655.17 M allocations: 58.181 GiB, 31.13% gc time, 0.08% compilation time)
 2 Ls1 Rs_ai
-+ 2 ∑_bj(Ls_bj Rs_aibj)
-- ∑_bj(Ls_bj Rs_ajbi)
-+ 2 ∑_bj(Ls_bj Rs t_aibj)
-- ∑_bj(Ls_bj Rs t_ajbi)
++ ∑_bj(Ls_bj Rv_aibj)
++ ∑_bj(Ls_bj Rs u_aibj)
 - ∑_bjck(Ls_bjck Rs_aj t_bick)
 - ∑_bjck(Ls_bjck Rs_bi t_ajck)
-+ 2 ∑_bjck(Ls_bjck Rs_bj t_aick)
-- ∑_bjck(Ls_bjck Rs_bj t_akci)
++ ∑_bjck(Ls_bjck Rs_bj u_aick)
 
 julia> @time mu_nu(E(1, 2), 1, 1)(block_vo)
 D_ai =
 
-  0.233846 seconds (2.82 M allocations: 246.036 MiB, 22.51% gc time)
+  0.232146 seconds (2.82 M allocations: 246.157 MiB, 23.01% gc time)
 Ls_ai Rs
 + ∑_bj(Ls_aibj Rs_bj)
 
 julia> @time mu_nu(E(1, 2), 1, 1)(block_vv)
 D_ab =
 
-  0.806990 seconds (31.09 M allocations: 2.726 GiB, 27.67% gc time)
+  0.997072 seconds (31.09 M allocations: 2.726 GiB, 35.30% gc time)
 ∑_i(Ls_ai Rs_bi)
 + ∑_icj(Ls_aicj Rs_bicj)
 + ∑_icj(Ls_aicj Rs t_bicj)
