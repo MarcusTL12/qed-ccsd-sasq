@@ -41,7 +41,7 @@ function F0_ai(H)
     F_matrix_wo_ccsd(H, ex_ketop(1, 2))
 end
 
-function F0_aibj(H, name)
+function F0_aibj(H)
     F = F_matrix_wo_ccsd(H, ex_ketop(1, 2, 3, 4))
 
     s, ss, ns = desymmetrize(F, make_permutation_mappings([(1, 2), (3, 4)]))
@@ -63,7 +63,7 @@ function F1_ai(H)
     F_matrix_wo_ccsd(H, ex_ketop(1, 2) * b')
 end
 
-function F1_aibj(H, name)
+function F1_aibj(H)
     F = F_matrix_wo_ccsd(H, ex_ketop(1, 2, 3, 4) * b')
 
     s, ss, ns = desymmetrize(F, make_permutation_mappings([(1, 2), (3, 4)]))
