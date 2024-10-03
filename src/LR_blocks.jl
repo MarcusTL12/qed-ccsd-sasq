@@ -180,6 +180,18 @@ function mu_nu(op, mu_ph, nu_ph)
     end
 end
 
+function ref_nu(op, nu_ph)
+    op = simplify(bch(op, T, 3)) * R_mu[nu_ph+1]
+    function f(block)
+        x = block(op)
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("t", "u"))
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("s", "v"))
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("Rt", "Ru"))
+        x = look_for_tensor_replacements_smart(x, make_exchange_transformer("Rs", "Rv"))
+        x
+    end
+end
+
 function full_gs_density(op, block)
     ref_ref(op)(block) + mu_ref(op, 0)(block) + mu_ref(op, 1)(block)
 end
