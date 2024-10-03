@@ -5,6 +5,7 @@ b = boson()
 include("LR_blocks.jl")
 include("W.jl")
 include("omega.jl")
+include("J.jl")
 
 t(inds...) = psym_tensor("t", inds...)
 s(inds...) = psym_tensor("s", inds...)
