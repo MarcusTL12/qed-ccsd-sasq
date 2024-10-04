@@ -57,6 +57,9 @@ R1_mu = (real_tensor("Rs") + ∑(R("s", 1, 2) * ex_ketop(1, 2), 1:2) +
 
 R_mu = (R0_mu, R1_mu)
 
+L_mu_full = L0_mu + L1_mu
+R_mu_full = R0_mu + R1_mu
+
 function filter_nongamma2((ex, trans))
     ts = [t for t in ex.terms if any(tens.symbol ∈ ("γ₂", "Ls2") for tens in t.tensors)]
     if !isempty(ts)
