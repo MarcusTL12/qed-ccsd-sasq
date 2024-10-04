@@ -1,0 +1,26 @@
+let
+    func = FortranFunction(("rho", ["v", "o", "v", "o"]))
+    outperms = [[1, 2, 3, 4], [3, 4, 1, 2]]
+    Ls_vo = ("Ls_vo", true)
+    Rs = ("Rs", true)
+    d_ov = ("d_ov", true)
+    Ls_vovo = ("Ls_vovo", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
+    d_oo = ("d_oo", true)
+    d_vv = ("d_vv", true)
+    Rs_vo = ("Rs_vo", true)
+    Rt_vo = ("Rt_vo", true)
+    γ₁ = ("s0", true)
+    update_code!(func, ein"ai,,jb->aibj", 2//1, [Ls_vo, Rs, d_ov], outperms)
+    update_code!(func, ein"aj,,ib->aibj", -1//1, [Ls_vo, Rs, d_ov], outperms)
+    update_code!(func, ein"aibk,,jk->aibj", -1//1, [Ls_vovo, Rs, d_oo], outperms)
+    update_code!(func, ein"aicj,,cb->aibj", 1//1, [Ls_vovo, Rs, d_vv], outperms)
+    update_code!(func, ein"aibj,ck,kc->aibj", 1//1, [Ls_vovo, Rs_vo, d_ov], outperms)
+    update_code!(func, ein"aibk,ck,jc->aibj", -2//1, [Ls_vovo, Rs_vo, d_ov], outperms)
+    update_code!(func, ein"aicj,ck,kb->aibj", -2//1, [Ls_vovo, Rs_vo, d_ov], outperms)
+    update_code!(func, ein"aick,ck,jb->aibj", 2//1, [Ls_vovo, Rs_vo, d_ov], outperms)
+    update_code!(func, ein"ajck,ck,ib->aibj", -1//1, [Ls_vovo, Rs_vo, d_ov], outperms)
+    update_code!(func, ein"aibk,ck,jc,->aibj", -1//1, [Ls_vovo, Rt_vo, d_ov, γ₁], outperms)
+    update_code!(func, ein"aicj,ck,kb,->aibj", -1//1, [Ls_vovo, Rt_vo, d_ov, γ₁], outperms)
+    finalize_eT_function(func, "F_matrix_transformation_bilinear_doubles_photon", "qed_ccsd")
+end
+
