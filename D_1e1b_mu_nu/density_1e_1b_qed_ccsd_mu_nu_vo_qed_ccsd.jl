@@ -1,0 +1,21 @@
+let
+    func = FortranFunction(("D_vo", ["v", "o"]))
+    Lt_vo = ("Lt_vo", true)
+    Rs = ("Rs", true)
+    Ls_vo = ("Ls_vo", true)
+    γ₁ = ("s0", true)
+    Ls_vovo = ("Ls_vovo", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
+    Rt_vo = ("Rt_vo", true)
+    Lt_vovo = ("Lt_vovo", true, [[1, 2, 3, 4], [3, 4, 1, 2]])
+    Rs_vo = ("Rs_vo", true)
+    s_vo = ("s_vo", true)
+    update_code!(func, ein"ai,->ai", 1//1, [Lt_vo, Rs])
+    update_code!(func, ein"ai,,->ai", 1//1, [Ls_vo, Rs, γ₁])
+    update_code!(func, ein"aibj,bj->ai", 1//1, [Ls_vovo, Rt_vo])
+    update_code!(func, ein"aibj,bj->ai", 1//1, [Lt_vovo, Rs_vo])
+    update_code!(func, ein"aibj,,bj->ai", 1//1, [Ls_vovo, Rs, s_vo])
+    update_code!(func, ein"aibj,bj,->ai", 1//1, [Ls_vovo, Rs_vo, γ₁])
+    update_code!(func, ein"aibj,bj,->ai", 1//1, [Lt_vovo, Rt_vo, γ₁])
+    finalize_eT_function(func, "density_1e_1b_qed_ccsd_mu_nu_vo_qed_ccsd", "qed_ccsd")
+end
+

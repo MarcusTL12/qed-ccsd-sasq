@@ -180,6 +180,10 @@ function mu_nu(op, mu_ph, nu_ph)
     end
 end
 
+function mu_nu_all_photons(op, block)
+    sum(mu_nu(op, i, j)(block) for i in 0:1, j in 0:1)
+end
+
 function ref_nu(op, nu_ph)
     op = simplify(bch(op, T, 3)) * R_mu[nu_ph+1]
     function f(block)
@@ -204,3 +208,61 @@ latex_rep = Dict([
     "Ls1" => "\\bar{\\gamma}",
     "γ₁" => "\\gamma"
 ])
+
+function D_oo_separated()
+    D = mu_nu_all_photons(E(1, 2) * (b' + b), block_oo)
+
+    diag_terms = eltype(D.terms)[]
+    other_terms = eltype(D.terms)[]
+
+    for t in D.terms
+        if length(t.deltas) == 1
+            empty!(t.deltas)
+            delete!(t.constraints, 1)
+            delete!(t.constraints, 2)
+            push!(diag_terms, t)
+        else
+            push!(other_terms, t)
+        end
+    end
+
+    diag_ex = SASQ.Expression(diag_terms) |> separate_LJ_ii
+    other_ex = SASQ.Expression(other_terms) |> separate_LJ_ii
+
+    trans = translate(OccupiedOrbital => 1:2)
+
+    make_W_code(diag_ex, "D", "density_1e_1b_qed_ccsd_mu_nu_oo_diagonal_terms_qed_ccsd", Int[], trans)
+    make_W_code(other_ex, "D_oo", "density_1e_1b_qed_ccsd_mu_nu_oo_qed_ccsd", [1, 2], trans)
+end
+
+function D_vo()
+    D = mu_nu_all_photons(E(1, 2) * (b' + b), block_vo)
+
+    trans = translate(OccupiedOrbital => 1:2)
+
+    make_W_code(D, "D_vo", "density_1e_1b_qed_ccsd_mu_nu_vo_qed_ccsd", [1, 2], trans)
+end
+
+function D_vo()
+    D = mu_nu_all_photons(E(1, 2) * (b' + b), block_vo)
+
+    trans = translate(OccupiedOrbital => [2], VirtualOrbital => [1])
+
+    make_W_code(D, "D_vo", "density_1e_1b_qed_ccsd_mu_nu_vo_qed_ccsd", [1, 2], trans)
+end
+
+function D_ov()
+    D = mu_nu_all_photons(E(1, 2) * (b' + b), block_ov)
+
+    trans = translate(OccupiedOrbital => [1], VirtualOrbital => [2])
+
+    make_W_code(D, "D_ov", "density_1e_1b_qed_ccsd_mu_nu_ov_qed_ccsd", [1, 2], trans)
+end
+
+function D_vv()
+    D = mu_nu_all_photons(E(1, 2) * (b' + b), block_vv)
+
+    trans = translate(VirtualOrbital => 1:2)
+
+    make_W_code(D, "D_vv", "density_1e_1b_qed_ccsd_mu_nu_vv_qed_ccsd", [1, 2], trans)
+end
